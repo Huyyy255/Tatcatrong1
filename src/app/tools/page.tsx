@@ -1,0 +1,77 @@
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { BrainCircuit, Clock, CloudSun, Timer } from "lucide-react";
+import WeatherWidget from "./weather-widget";
+import ClockWidget from "./clock-widget";
+import CountdownWidget from "./countdown-widget";
+import TrendingTopics from "./trending-topics";
+
+export default function ToolsPage() {
+  return (
+    <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mb-12 text-center">
+        <h1 className="font-headline text-4xl font-bold tracking-tight">
+          Personal Tools
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+          A collection of useful widgets and AI-powered tools.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Current Weather
+            </CardTitle>
+            <CloudSun className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <WeatherWidget />
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-2 gap-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Real-Time Clock
+              </CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <ClockWidget />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Event Countdown
+              </CardTitle>
+              <Timer className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <CountdownWidget />
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="md:col-span-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Trending Topic Suggestions
+            </CardTitle>
+            <BrainCircuit className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <TrendingTopics />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
