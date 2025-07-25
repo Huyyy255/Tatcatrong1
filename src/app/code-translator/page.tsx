@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useMemo } from 'react';
@@ -6,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { ArrowRightLeft } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 type Mode = 'encode' | 'decode';
 type Format = 'binary' | 'hex' | 'base64' | 'url';
@@ -19,7 +21,7 @@ const formatLabels: Record<Format, string> = {
 
 const defaultInputText = 'Xin chào!';
 
-export default function CodeTranslator() {
+function CodeTranslator() {
   const [input, setInput] = useState<string>(defaultInputText);
   const [format, setFormat] = useState<Format>('binary');
   const [mode, setMode] = useState<Mode>('encode');
@@ -81,49 +83,71 @@ export default function CodeTranslator() {
   const outputLabel = mode === 'encode' ? `Mã ${formatLabels[format]}` : 'Văn bản gốc';
 
   return (
-    <div className="space-y-4">
-      <Select onValueChange={handleFormatChange} defaultValue={format}>
-        <SelectTrigger>
-          <SelectValue placeholder="Chọn định dạng mã hóa" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="binary">{formatLabels.binary}</SelectItem>
-          <SelectItem value="hex">{formatLabels.hex}</SelectItem>
-          <SelectItem value="base64">{formatLabels.base64}</SelectItem>
-          <SelectItem value="url">{formatLabels.url}</SelectItem>
-        </SelectContent>
-      </Select>
+    <Card>
+        <CardHeader>
+            <CardTitle>Bộ giải mã đa năng</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+            <Select onValueChange={handleFormatChange} defaultValue={format}>
+                <SelectTrigger>
+                <SelectValue placeholder="Chọn định dạng mã hóa" />
+                </SelectTrigger>
+                <SelectContent>
+                <SelectItem value="binary">{formatLabels.binary}</SelectItem>
+                <SelectItem value="hex">{formatLabels.hex}</SelectItem>
+                <SelectItem value="base64">{formatLabels.base64}</SelectItem>
+                <SelectItem value="url">{formatLabels.url}</SelectItem>
+                </SelectContent>
+            </Select>
 
-      <div className="grid gap-4">
-         <div>
-          <Label htmlFor="input-textarea" className="text-sm font-medium">{inputLabel}</Label>
-          <Textarea
-            id="input-textarea"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Nhập vào đây..."
-            rows={4}
-          />
-        </div>
+            <div className="grid gap-4">
+                <div>
+                <Label htmlFor="input-textarea" className="text-sm font-medium">{inputLabel}</Label>
+                <Textarea
+                    id="input-textarea"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Nhập vào đây..."
+                    rows={6}
+                />
+                </div>
 
-        <div className="flex justify-center">
-            <Button variant="ghost" size="icon" onClick={handleSwap}>
-                <ArrowRightLeft className="h-5 w-5" />
-            </Button>
-        </div>
+                <div className="flex justify-center">
+                    <Button variant="ghost" size="icon" onClick={handleSwap}>
+                        <ArrowRightLeft className="h-5 w-5" />
+                    </Button>
+                </div>
 
-         <div>
-          <Label htmlFor="output-textarea" className="text-sm font-medium">{outputLabel}</Label>
-          <Textarea
-            id="output-textarea"
-            value={output}
-            readOnly
-            placeholder="Kết quả sẽ hiển thị ở đây..."
-            rows={4}
-            className="bg-muted"
-          />
-        </div>
-      </div>
-    </div>
+                <div>
+                <Label htmlFor="output-textarea" className="text-sm font-medium">{outputLabel}</Label>
+                <Textarea
+                    id="output-textarea"
+                    value={output}
+                    readOnly
+                    placeholder="Kết quả sẽ hiển thị ở đây..."
+                    rows={6}
+                    className="bg-muted"
+                />
+                </div>
+            </div>
+        </CardContent>
+    </Card>
   );
+}
+
+
+export default function CodeTranslatorPage() {
+    return (
+        <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="mb-8 text-center">
+                <h1 className="font-headline text-4xl font-bold tracking-tight">
+                    Dịch mã đa năng
+                </h1>
+                <p className="mt-4 text-lg text-muted-foreground">
+                    Chuyển đổi văn bản sang các định dạng mã hóa phổ biến và ngược lại.
+                </p>
+            </div>
+            <CodeTranslator />
+        </div>
+    );
 }

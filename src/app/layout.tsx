@@ -19,6 +19,7 @@ import {
 import {
   AudioLines,
   BotMessageSquare,
+  Code2,
   CodeXml,
   FileText,
   HelpCircle,
@@ -51,6 +52,7 @@ const mainNav = [
 const utilitiesNav = [
   { href: "/tasks",label: "Công việc", icon: ListTodo },
   { href: "/notes", label: "Ghi chú", icon: FileText },
+  { href: "/code-translator", label: "Dịch mã đa năng", icon: Code2 },
   { href: "/faq", label: "Hỏi đáp", icon: HelpCircle },
 ]
 

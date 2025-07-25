@@ -4,13 +4,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, CloudSun, Code, ImageIcon, Timer } from "lucide-react";
+import { BrainCircuit, Clock, CloudSun, ImageIcon, Timer } from "lucide-react";
 import WeatherWidget from "./weather-widget";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";
 import ImageGenerator from "./image-generator";
-import CodeTranslator from "./code-translator";
 
 export default function ToolsPage() {
   return (
@@ -37,18 +36,6 @@ export default function ToolsPage() {
           </CardContent>
         </Card>
         
-        <Card className="row-span-2">
-           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Bộ giải mã đa năng
-            </CardTitle>
-            <Code className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <CodeTranslator />
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -61,7 +48,7 @@ export default function ToolsPage() {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-8 md:col-span-2">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
