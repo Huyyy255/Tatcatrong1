@@ -17,6 +17,7 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import {
+  AudioLines,
   BotMessageSquare,
   CodeXml,
   FileText,

@@ -22,9 +22,10 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Trash2, Edit, Plus, Search, X, Sparkles, Loader2 } from "lucide-react";
+import { Trash2, Edit, Plus, Search, X, Sparkles, Loader2, AudioLines } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { summarizeNote, SummarizeNoteOutput } from "@/ai/flows/summarize-note";
+import { textToSpeech, TextToSpeechOutput } from "@/ai/flows/text-to-speech";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -34,6 +35,7 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
+  AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 
 
@@ -58,6 +60,12 @@ export default function NotesPage() {
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
   const [summary, setSummary] = useState<SummarizeNoteOutput | null>(null);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+  
+  const [isAudioLoading, setIsAudioLoading] = useState(false);
+  const [audio, setAudio] = useState<TextToSpeechOutput | null>(null);
+  const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
+  const [noteToListen, setNoteToListen] = useState<Note | null>(null);
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -137,6 +145,27 @@ export default function NotesPage() {
       setIsSummaryLoading(false);
     }
   };
+
+  const handleListenToNote = async (note: Note) => {
+    setIsAudioLoading(true);
+    setAudio(null);
+    setNoteToListen(note);
+    setIsAudioModalOpen(true);
+    try {
+      const result = await textToSpeech({ text: `${note.title}. ${note.content}` });
+      setAudio(result);
+    } catch (error) {
+      console.error("Failed to generate audio:", error);
+      setIsAudioModalOpen(false);
+      toast({
+        title: "Lỗi",
+        description: "Không thể tạo âm thanh. Vui lòng thử lại.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAudioLoading(false);
+    }
+  }
 
 
   const openEditModal = (note: Note) => {
@@ -281,6 +310,15 @@ export default function NotesPage() {
                 {new Date(note.createdAt).toLocaleDateString("vi-VN")}
               </span>
               <div className="flex gap-1">
+                 <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => handleListenToNote(note)}
+                  title="Nghe ghi chú"
+                >
+                  <AudioLines className="h-4 w-4" />
+                </Button>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -338,6 +376,30 @@ export default function NotesPage() {
           )}
           <AlertDialogFooter>
              <AlertDialogAction onClick={() => setIsSummaryModalOpen(false)}>Đóng</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog open={isAudioModalOpen} onOpenChange={setIsAudioModalOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Nghe ghi chú: {noteToListen?.title}</AlertDialogTitle>
+            <AlertDialogDescription>
+              AI đang đọc ghi chú của bạn.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {isAudioLoading && (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          )}
+          {audio?.audioDataUri && (
+             <audio controls autoPlay className="w-full">
+                <source src={audio.audioDataUri} type="audio/wav" />
+                Trình duyệt của bạn không hỗ trợ phần tử audio.
+            </audio>
+          )}
+          <AlertDialogFooter>
+            <AlertDialogCancel>Đóng</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
