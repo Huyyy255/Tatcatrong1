@@ -1,3 +1,6 @@
+
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,9 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { allPosts } from "@/lib/posts";
-import { ArrowRight, CodeXml, Newspaper, Gift } from "lucide-react";
+import { ArrowRight, CodeXml, Newspaper, Gift, Cake } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useState } from "react";
+import BirthdayExperience from "./birthday-experience";
+
 
 const featuredProjects = [
     {
@@ -32,30 +39,47 @@ const featuredProjects = [
 ]
 
 export default function Home() {
+  const { theme } = useTheme();
+  const [startBirthdayExperience, setStartBirthdayExperience] = useState(false);
   const recentPosts = allPosts.slice(0, 2);
+
+  const isBirthdayTheme = theme === "birthday";
 
   return (
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+      {isBirthdayTheme && startBirthdayExperience && <BirthdayExperience />}
       <section className="mb-16 text-center">
         <h1 className="font-headline text-5xl font-bold tracking-tight">
-         Chúc mừng sinh nhật, Huy!
+         {isBirthdayTheme ? "Chúc mừng sinh nhật, Huy!" : "Trung tâm cá nhân"}
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          Đây là một ngày đặc biệt! Hôm nay là ngày của bạn. Chúc bạn một tuổi mới tràn đầy niềm vui, thành công và những dòng code đẹp.
+          {isBirthdayTheme 
+            ? "Đây là một ngày đặc biệt! Hôm nay là ngày của bạn. Chúc bạn một tuổi mới tràn đầy niềm vui, thành công và những dòng code đẹp."
+            : "Chào mừng đến với không gian cá nhân của tôi. Nơi đây trưng bày các dự án, chia sẻ kiến thức qua blog và cung cấp nhiều công cụ hữu ích."
+          }
         </p>
         <div className="mt-8 flex justify-center gap-4">
-            <Button size="lg" asChild>
-                <Link href="/portfolio">
-                    <Gift className="mr-2"/>
-                    Xem Quà
-                </Link>
+          {isBirthdayTheme ? (
+            <Button size="lg" onClick={() => setStartBirthdayExperience(true)} disabled={startBirthdayExperience}>
+              <Cake className="mr-2"/>
+              {startBirthdayExperience ? "Chúc mừng!" : "Thổi nến!"}
             </Button>
-            <Button size="lg" variant="outline" asChild>
-                <Link href="/blog">
-                    <Newspaper className="mr-2"/>
-                    Đọc Lời chúc
-                </Link>
-            </Button>
+          ) : (
+            <>
+              <Button size="lg" asChild>
+                  <Link href="/portfolio">
+                      <CodeXml className="mr-2"/>
+                      Xem dự án
+                  </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                  <Link href="/blog">
+                      <Newspaper className="mr-2"/>
+                      Đọc blog
+                  </Link>
+              </Button>
+            </>
+          )}
         </div>
       </section>
 
