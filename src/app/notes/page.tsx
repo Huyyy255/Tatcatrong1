@@ -22,8 +22,20 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Trash2, Edit, Plus, GripVertical, Search, X } from "lucide-react";
+import { Trash2, Edit, Plus, Search, X, Sparkles, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { summarizeNote, SummarizeNoteOutput } from "@/ai/flows/summarize-note";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
+
 
 interface Note {
   id: number;
@@ -43,6 +55,10 @@ export default function NotesPage() {
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSummaryLoading, setIsSummaryLoading] = useState(false);
+  const [summary, setSummary] = useState<SummarizeNoteOutput | null>(null);
+  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const savedNotes = localStorage.getItem("notes");
@@ -54,15 +70,15 @@ export default function NotesPage() {
           id: 1,
           title: "Ý tưởng cho dự án mới",
           content:
-            "Xây dựng một ứng dụng theo dõi thói quen để giúp mọi người hình thành những thói quen tốt. Tích hợp gamification để tăng động lực.",
+            "Xây dựng một ứng dụng theo dõi thói quen để giúp mọi người hình thành những thói quen tốt. Tích hợp gamification để tăng động lực. Cần xem xét các tính năng như đặt mục tiêu hàng ngày, theo dõi tiến độ qua biểu đồ, và hệ thống phần thưởng khi đạt được cột mốc quan trọng. Giao diện cần đơn giản, thân thiện và tạo cảm hứng cho người dùng.",
           tags: ["dự án", "ý tưởng", "react"],
           createdAt: new Date().toISOString(),
         },
         {
           id: 2,
-          title: "Công thức nấu ăn",
+          title: "Công thức nấu ăn: Gà nướng sả ớt",
           content:
-            "Công thức món gà nướng sả ớt:\n- 500g đùi gà\n- 3 cây sả\n- 2 quả ớt\n- Gia vị: nước mắm, đường, tiêu, hạt nêm.",
+            "Công thức món gà nướng sả ớt:\n- 500g đùi gà, rửa sạch, để ráo.\n- 3 cây sả, 2 quả ớt băm nhuyễn.\n- Gia vị: 2 muỗng canh nước mắm, 1 muỗng canh đường, 1/2 muỗng cà phê tiêu, 1 muỗng cà phê hạt nêm.\n- Trộn đều gà với sả, ớt và các gia vị. Ướp ít nhất 30 phút.\n- Làm nóng lò nướng ở 200°C. Cho gà vào nướng trong 20-25 phút, hoặc cho đến khi gà chín vàng đều. Có thể lật gà giữa chừng để đảm bảo gà chín đều hai mặt.",
           tags: ["nấu ăn", "công thức"],
           createdAt: new Date().toISOString(),
         },
@@ -101,6 +117,27 @@ export default function NotesPage() {
   const handleDeleteNote = (id: number) => {
     setNotes(notes.filter((note) => note.id !== id));
   };
+  
+  const handleSummarizeNote = async (content: string) => {
+    setIsSummaryLoading(true);
+    setSummary(null);
+    setIsSummaryModalOpen(true);
+    try {
+      const result = await summarizeNote({ noteContent: content });
+      setSummary(result);
+    } catch (error) {
+      console.error("Failed to summarize note:", error);
+      setIsSummaryModalOpen(false);
+      toast({
+        title: "Lỗi",
+        description: "Không thể tóm tắt ghi chú. Vui lòng thử lại.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSummaryLoading(false);
+    }
+  };
+
 
   const openEditModal = (note: Note) => {
     setEditingNote({ ...note, tags: note.tags.join(", ") });
@@ -248,6 +285,15 @@ export default function NotesPage() {
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8"
+                  onClick={() => handleSummarizeNote(note.content)}
+                  title="Tóm tắt ghi chú"
+                >
+                  <Sparkles className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
                   onClick={() => openEditModal(note)}
                 >
                   <Edit className="h-4 w-4" />
@@ -272,6 +318,29 @@ export default function NotesPage() {
           </p>
         </div>
       )}
+      <AlertDialog open={isSummaryModalOpen} onOpenChange={setIsSummaryModalOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Bản tóm tắt ghi chú</AlertDialogTitle>
+             <AlertDialogDescription>
+              Đây là bản tóm tắt được tạo bởi AI.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {isSummaryLoading && (
+             <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+             </div>
+          )}
+          {summary && (
+            <div className="max-h-[400px] overflow-y-auto rounded-md border bg-muted/50 p-4 text-sm">
+                {summary.summary}
+            </div>
+          )}
+          <AlertDialogFooter>
+             <AlertDialogAction onClick={() => setIsSummaryModalOpen(false)}>Đóng</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
