@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "./theme-toggle";
 
 const navLinks = [
   { href: "/", label: "Trang chủ", icon: Home },
@@ -38,7 +39,7 @@ export default function Header() {
             Trung tâm cá nhân
           </span>
         </Link>
-        <nav className="flex items-center space-x-1 sm:space-x-4">
+        <nav className="flex flex-grow items-center space-x-1 sm:space-x-4">
           {navLinks.map((link) => (
             <Button
               key={link.href}
@@ -59,6 +60,7 @@ export default function Header() {
             </Button>
           ))}
         </nav>
+        <ThemeToggle />
       </div>
     </header>
   );
