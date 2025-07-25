@@ -4,12 +4,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, CloudSun, ImageIcon, Timer } from "lucide-react";
+import { BrainCircuit, Clock, CloudSun, Code, ImageIcon, Timer } from "lucide-react";
 import WeatherWidget from "./weather-widget";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";
 import ImageGenerator from "./image-generator";
+import CodeTranslator from "./code-translator";
 
 export default function ToolsPage() {
   return (
@@ -23,8 +24,8 @@ export default function ToolsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2">
-        <Card className="md:col-span-2">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Tạo ảnh bằng AI
@@ -33,6 +34,18 @@ export default function ToolsPage() {
           </CardHeader>
           <CardContent>
             <ImageGenerator />
+          </CardContent>
+        </Card>
+        
+        <Card className="row-span-2">
+           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Bộ giải mã đa năng
+            </CardTitle>
+            <Code className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <CodeTranslator />
           </CardContent>
         </Card>
 
@@ -73,7 +86,7 @@ export default function ToolsPage() {
           </Card>
         </div>
 
-        <Card className="md:col-span-2">
+        <Card className="md:col-span-2 lg:col-span-3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Gợi ý chủ đề thịnh hành
