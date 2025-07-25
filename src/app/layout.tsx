@@ -1,13 +1,48 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
+import {
+  Sidebar,
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+  SidebarHeader,
+  SidebarContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarFooter,
+} from "@/components/ui/sidebar";
+import {
+  CodeXml,
+  FileText,
+  HelpCircle,
+  Home,
+  ListTodo,
+  Newspaper,
+  Rss,
+  Wrench,
+} from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const metadata: Metadata = {
   title: "Trung tâm cá nhân tất cả trong một",
-  description: "Một trung tâm cá nhân với portfolio, blog, và nhiều công cụ khác.",
+  description:
+    "Một trung tâm cá nhân với portfolio, blog, và nhiều công cụ khác.",
 };
+
+const navLinks = [
+  { href: "/", label: "Trang chủ", icon: Home },
+  { href: "/portfolio", label: "Dự án", icon: CodeXml },
+  { href: "/blog", label: "Bài viết", icon: Newspaper },
+  { href: "/tasks",label: "Công việc", icon: ListTodo },
+  { href: "/notes", label: "Ghi chú", icon: FileText },
+  { href: "/faq", label: "Hỏi đáp", icon: HelpCircle },
+  { href: "/tools", label: "Công cụ", icon: Wrench },
+];
 
 export default function RootLayout({
   children,
@@ -18,7 +53,11 @@ export default function RootLayout({
     <html lang="vi" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
           rel="stylesheet"
@@ -35,8 +74,51 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main>{children}</main>
+          <SidebarProvider>
+            <Sidebar>
+              <SidebarHeader>
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon" asChild>
+                    <Link href="/">
+                      <Rss className="h-6 w-6 text-primary" />
+                    </Link>
+                  </Button>
+                  <span className="font-headline font-bold">
+                    Trung tâm cá nhân
+                  </span>
+                </div>
+              </SidebarHeader>
+              <SidebarContent>
+                <SidebarMenu>
+                  {navLinks.map((link) => (
+                    <SidebarMenuItem key={link.href}>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip={{ children: link.label }}
+                      >
+                        <Link href={link.href}>
+                          <link.icon />
+                          <span>{link.label}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarContent>
+              <SidebarFooter>
+                <ThemeToggle />
+              </SidebarFooter>
+            </Sidebar>
+            <SidebarInset>
+              <header className="flex h-16 items-center justify-end border-b px-6 md:justify-between">
+                <div className="hidden md:block">
+                  {/* Có thể thêm breadcrumbs hoặc tiêu đề trang ở đây */}
+                </div>
+                <SidebarTrigger className="md:hidden" />
+              </header>
+              <main>{children}</main>
+            </SidebarInset>
+          </SidebarProvider>
           <Toaster />
         </ThemeProvider>
       </body>

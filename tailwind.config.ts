@@ -62,6 +62,14 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        sidebar: {
+          DEFAULT: "hsl(var(--card))",
+          border: "hsl(var(--border))",
+          foreground: "hsl(var(--card-foreground))",
+          accent: "hsl(var(--accent))",
+          "accent-foreground": "hsl(var(--accent-foreground))",
+          ring: "hsl(var(--ring))",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
