@@ -4,11 +4,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, CloudSun, Timer } from "lucide-react";
+import { BrainCircuit, Clock, CloudSun, ImageIcon, Timer } from "lucide-react";
 import WeatherWidget from "./weather-widget";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";
+import ImageGenerator from "./image-generator";
 
 export default function ToolsPage() {
   return (
@@ -23,6 +24,18 @@ export default function ToolsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2">
+        <Card className="md:col-span-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Tạo ảnh bằng AI
+            </CardTitle>
+            <ImageIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <ImageGenerator />
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
