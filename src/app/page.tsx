@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { allPosts } from "@/lib/posts";
-import { ArrowRight, CodeXml, Newspaper } from "lucide-react";
+import { ArrowRight, CodeXml, Newspaper, Gift } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -38,10 +38,10 @@ export default function Home() {
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <section className="mb-16 text-center">
         <h1 className="font-headline text-5xl font-bold tracking-tight">
-          Xin chào, tôi là Huy!
+         Chúc mừng sinh nhật, Huy!
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          Tôi là một nhà phát triển full-stack đam mê xây dựng các ứng dụng web đẹp và hữu ích. Chào mừng bạn đến với trung tâm cá nhân của tôi, nơi tôi giới thiệu các dự án và chia sẻ kiến thức của mình.
+          Đây là một ngày đặc biệt! Hôm nay là ngày của bạn. Chúc bạn một tuổi mới tràn đầy niềm vui, thành công và những dòng code đẹp.
         </p>
         <div className="mt-8 flex justify-center gap-4">
             <Button size="lg" asChild>

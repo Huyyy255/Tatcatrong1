@@ -57,6 +57,28 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  
+  .birthday {
+    --background: 230 40% 15%; /* Deep royal blue */
+    --foreground: 45 100% 95%; /* Light gold */
+    --card: 230 40% 20%;
+    --card-foreground: 45 100% 95%;
+    --popover: 230 40% 10%;
+    --popover-foreground: 45 100% 95%;
+    --primary: 45 100% 60%; /* Bright gold */
+    --primary-foreground: 230 40% 10%; /* Dark blue for text on gold */
+    --secondary: 230 40% 25%;
+    --secondary-foreground: 45 100% 95%;
+    --muted: 230 40% 25%;
+    --muted-foreground: 230 20% 65%;
+    --accent: 45 100% 70%;
+    --accent-foreground: 230 40% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 45 100% 40%;
+    --input: 230 40% 25%;
+    --ring: 45 100% 60%;
+  }
 }
 
 @layer base {
@@ -67,3 +89,49 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.birthday #confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.birthday .confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 20px;
+  background-color: hsl(var(--primary));
+  opacity: 0;
+  animation: confetti-fall 5s linear infinite;
+}
+
+.birthday .confetti-piece:nth-child(2) { background-color: #ffd700; animation-delay: 0.5s; }
+.birthday .confetti-piece:nth-child(3) { background-color: #ff69b4; animation-delay: 1s; }
+.birthday .confetti-piece:nth-child(4) { background-color: #00ced1; animation-delay: 1.5s; }
+.birthday .confetti-piece:nth-child(5) { background-color: #ff4500; animation-delay: 2s; }
+.birthday .confetti-piece:nth-child(6) { background-color: #9370db; animation-delay: 2.5s; }
+.birthday .confetti-piece:nth-child(7) { background-color: #32cd32; animation-delay: 3s; }
+.birthday .confetti-piece:nth-child(8) { background-color: #ff1493; animation-delay: 3.5s; }
+.birthday .confetti-piece:nth-child(9) { background-color: #1e90ff; animation-delay: 4s; }
+.birthday .confetti-piece:nth-child(10) { background-color: #f0e68c; animation-delay: 4.5s; }
+.birthday .confetti-piece:nth-child(11) { background-color: #ffa500; animation-delay: 0.2s; }
+.birthday .confetti-piece:nth-child(12) { background-color: #add8e6; animation-delay: 0.8s; }
+.birthday .confetti-piece:nth-child(13) { background-color: #e6e6fa; animation-delay: 1.2s; }
+.birthday .confetti-piece:nth-child(14) { background-color: #ffc0cb; animation-delay: 1.8s; }
+.birthday .confetti-piece:nth-child(15) { background-color: #b0e0e6; animation-delay: 2.2s; }

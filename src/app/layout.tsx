@@ -31,6 +31,8 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Confetti } from "@/components/confetti";
+
 
 export const metadata: Metadata = {
   title: "Trung tâm cá nhân tất cả trong một",
@@ -158,6 +160,7 @@ export default function RootLayout({
             </SidebarInset>
           </SidebarProvider>
           <Toaster />
+          <Confetti />
         </ThemeProvider>
       </body>
     </html>
