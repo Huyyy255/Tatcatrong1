@@ -1,27 +1,23 @@
-import React from "react";
+import { Sparkles } from "lucide-react";
+
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-4">
-      <header className="mb-12 text-center">
-        <h1 className="text-4xl font-bold tracking-tight">Họ Tên Của Bạn</h1>
-        <p className="text-gray-500 mt-2">Mục đích cá nhân &mdash; Phong cách tối giản</p>
-      </header>
-      <section className="max-w-xl w-full mb-8">
-        <h2 className="text-xl font-semibold border-b border-gray-200 pb-2 mb-4">Giới thiệu</h2>
-        <p>
-          Xin chào! Đây là trang web cá nhân của tôi. Tôi thích sự đơn giản và hiện đại.
+    <div className="flex h-[calc(100vh-4rem)] w-full items-center justify-center">
+      <div className="relative mx-auto flex max-w-3xl flex-col items-center justify-center text-center">
+        <div className="absolute -top-14 -z-10 blur-3xl">
+          <div className="h-40 w-40 rounded-full bg-primary/20 lg:h-52 lg:w-52"></div>
+        </div>
+        <div className="mb-4 flex items-center gap-2 rounded-full border bg-background/80 px-4 py-1 text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
+          <Sparkles className="h-4 w-4 text-primary" />
+          <span>Chào mừng đến trung tâm cá nhân của tôi</span>
+        </div>
+        <h1 className="font-headline scroll-m-20 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+          Xin chào, tôi là Phạm Văn Huy
+        </h1>
+        <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+          Phạm Văn Huy 25 7 2011
         </p>
-      </section>
-      <section className="max-w-xl w-full">
-        <h2 className="text-xl font-semibold border-b border-gray-200 pb-2 mb-4">Liên hệ</h2>
-        <ul>
-          <li>Email: <a href="mailto:ban@domain.com" className="underline decoration-dotted">ban@domain.com</a></li>
-          <li>Github: <a href="https://github.com/Huyyy255" target="_blank" className="underline decoration-dotted">Huyyy255</a></li>
-        </ul>
-      </section>
-      <footer className="mt-12 text-gray-400 text-sm border-t border-gray-200 pt-4 w-full text-center">
-        &copy; 2025 Họ Tên Của Bạn
-      </footer>
-    </main>
+      </div>
+    </div>
   );
 }
