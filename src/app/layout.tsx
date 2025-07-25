@@ -24,6 +24,7 @@ import {
   HelpCircle,
   Home,
   ListTodo,
+  Mail,
   Newspaper,
   Rss,
   Wrench,
@@ -44,6 +45,7 @@ const mainNav = [
   { href: "/", label: "Trang chủ", icon: Home },
   { href: "/portfolio", label: "Dự án", icon: CodeXml },
   { href: "/blog", label: "Bài viết", icon: Newspaper },
+  { href: "/contact", label: "Liên hệ", icon: Mail },
 ];
 
 const utilitiesNav = [
