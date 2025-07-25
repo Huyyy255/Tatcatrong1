@@ -10,6 +10,7 @@ import {
   Rss,
   Wrench,
   HelpCircle,
+  ListTodo,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ const navLinks = [
   { href: "/", label: "Trang chủ", icon: Home },
   { href: "/portfolio", label: "Dự án", icon: CodeXml },
   { href: "/blog", label: "Bài viết", icon: Newspaper },
+  { href: "/tasks", label: "Công việc", icon: ListTodo },
   { href: "/faq", label: "Hỏi đáp", icon: HelpCircle },
   { href: "/tools", label: "Công cụ", icon: Wrench },
 ];
