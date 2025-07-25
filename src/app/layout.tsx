@@ -13,8 +13,11 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import {
+  BotMessageSquare,
   CodeXml,
   FileText,
   HelpCircle,
@@ -34,15 +37,22 @@ export const metadata: Metadata = {
     "Một trung tâm cá nhân với portfolio, blog, và nhiều công cụ khác.",
 };
 
-const navLinks = [
+const mainNav = [
   { href: "/", label: "Trang chủ", icon: Home },
   { href: "/portfolio", label: "Dự án", icon: CodeXml },
   { href: "/blog", label: "Bài viết", icon: Newspaper },
+];
+
+const utilitiesNav = [
   { href: "/tasks",label: "Công việc", icon: ListTodo },
   { href: "/notes", label: "Ghi chú", icon: FileText },
   { href: "/faq", label: "Hỏi đáp", icon: HelpCircle },
-  { href: "/tools", label: "Công cụ", icon: Wrench },
-];
+]
+
+const toolsNav = [
+   { href: "/chat", label: "Trợ lý AI", icon: BotMessageSquare },
+   { href: "/tools", label: "Công cụ", icon: Wrench },
+]
 
 export default function RootLayout({
   children,
@@ -89,21 +99,51 @@ export default function RootLayout({
                 </div>
               </SidebarHeader>
               <SidebarContent>
-                <SidebarMenu>
-                  {navLinks.map((link) => (
-                    <SidebarMenuItem key={link.href}>
-                      <SidebarMenuButton
-                        asChild
-                        tooltip={{ children: link.label }}
-                      >
-                        <Link href={link.href}>
-                          <link.icon />
-                          <span>{link.label}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
+                <SidebarGroup>
+                   <SidebarGroupLabel>Cá nhân</SidebarGroupLabel>
+                    <SidebarMenu>
+                      {mainNav.map((link) => (
+                        <SidebarMenuItem key={link.href}>
+                          <SidebarMenuButton asChild tooltip={{ children: link.label }}>
+                            <Link href={link.href}>
+                              <link.icon />
+                              <span>{link.label}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      ))}
+                    </SidebarMenu>
+                </SidebarGroup>
+                 <SidebarGroup>
+                   <SidebarGroupLabel>Tiện ích</SidebarGroupLabel>
+                    <SidebarMenu>
+                      {utilitiesNav.map((link) => (
+                        <SidebarMenuItem key={link.href}>
+                          <SidebarMenuButton asChild tooltip={{ children: link.label }}>
+                            <Link href={link.href}>
+                              <link.icon />
+                              <span>{link.label}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      ))}
+                    </SidebarMenu>
+                </SidebarGroup>
+                 <SidebarGroup>
+                   <SidebarGroupLabel>Công cụ AI</SidebarGroupLabel>
+                    <SidebarMenu>
+                      {toolsNav.map((link) => (
+                        <SidebarMenuItem key={link.href}>
+                          <SidebarMenuButton asChild tooltip={{ children: link.label }}>
+                            <Link href={link.href}>
+                              <link.icon />
+                              <span>{link.label}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      ))}
+                    </SidebarMenu>
+                </SidebarGroup>
               </SidebarContent>
               <SidebarFooter>
                 <ThemeToggle />
