@@ -70,7 +70,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
@@ -110,10 +110,7 @@ export default function RootLayout({
               </SidebarFooter>
             </Sidebar>
             <SidebarInset>
-              <header className="flex h-16 items-center justify-end border-b px-6 md:justify-between">
-                <div className="hidden md:block">
-                  {/* Có thể thêm breadcrumbs hoặc tiêu đề trang ở đây */}
-                </div>
+              <header className="flex h-16 items-center justify-end border-b px-6 md:justify-end">
                 <SidebarTrigger className="md:hidden" />
               </header>
               <main>{children}</main>
