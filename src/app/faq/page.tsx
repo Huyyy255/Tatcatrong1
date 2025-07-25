@@ -7,29 +7,29 @@ import {
 
 const faqs = [
   {
-    question: "What technologies do you specialize in?",
+    question: "Bạn chuyên về những công nghệ nào?",
     answer:
-      "I specialize in the MERN stack (MongoDB, Express, React, Node.js) and have extensive experience with Next.js, Firebase, and Tailwind CSS. I'm always learning and adapting to new technologies in the web development ecosystem.",
+      "Tôi chuyên về MERN stack (MongoDB, Express, React, Node.js) và có nhiều kinh nghiệm với Next.js, Firebase và Tailwind CSS. Tôi luôn học hỏi và thích ứng với các công nghệ mới trong hệ sinh thái phát triển web.",
   },
   {
-    question: "Are you available for freelance projects?",
+    question: "Bạn có nhận dự án tự do không?",
     answer:
-      "Yes, I am currently open to new freelance opportunities. Please use the contact form on this website to get in touch with details about your project, and I'll get back to you as soon as possible.",
+      "Có, tôi hiện đang mở cửa cho các cơ hội làm việc tự do mới. Vui lòng sử dụng biểu mẫu liên hệ trên trang web này để liên lạc với thông tin chi tiết về dự án của bạn và tôi sẽ trả lời bạn sớm nhất có thể.",
   },
   {
-    question: "How do you stay updated with the latest industry trends?",
+    question: "Làm thế nào để bạn cập nhật các xu hướng ngành mới nhất?",
     answer:
-      "I am a lifelong learner. I regularly read tech blogs, follow industry leaders on social media, contribute to open-source projects, and take online courses to keep my skills sharp and up-to-date.",
+      "Tôi là một người học hỏi suốt đời. Tôi thường xuyên đọc các blog công nghệ, theo dõi các nhà lãnh đạo ngành trên mạng xã hội, đóng góp vào các dự án mã nguồn mở và tham gia các khóa học trực tuyến để giữ cho kỹ năng của mình luôn sắc bén và cập nhật.",
   },
   {
-    question: "Can I see the source code for this website?",
+    question: "Tôi có thể xem mã nguồn của trang web này không?",
     answer:
-      "Absolutely! This website is open source. You can find the complete source code on my GitHub profile. Feel free to explore, fork, or use it as a template for your own site.",
+      "Chắc chắn rồi! Trang web này là mã nguồn mở. Bạn có thể tìm thấy mã nguồn hoàn chỉnh trên hồ sơ GitHub của tôi. Hãy thoải mái khám phá, phân nhánh hoặc sử dụng nó làm mẫu cho trang web của riêng bạn.",
   },
   {
-    question: "What is your process for starting a new project?",
+    question: "Quy trình của bạn để bắt đầu một dự án mới là gì?",
     answer:
-      "My process begins with a discovery phase to understand the project goals and requirements. This is followed by planning, design mockups, development, testing, and deployment. I believe in clear communication and collaboration throughout the entire lifecycle of a project.",
+      "Quy trình của tôi bắt đầu với giai đoạn khám phá để hiểu mục tiêu và yêu cầu của dự án. Tiếp theo là lập kế hoạch, thiết kế mô phỏng, phát triển, thử nghiệm và triển khai. Tôi tin vào giao tiếp và hợp tác rõ ràng trong toàn bộ vòng đời của một dự án.",
   },
 ];
 
@@ -38,10 +38,10 @@ export default function FaqPage() {
     <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-12 text-center">
         <h1 className="font-headline text-4xl font-bold tracking-tight">
-          Frequently Asked Questions
+          Các câu hỏi thường gặp
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">
-          Here are some common questions I get.
+          Đây là một số câu hỏi phổ biến tôi nhận được.
         </p>
       </div>
       <Accordion type="single" collapsible className="w-full">

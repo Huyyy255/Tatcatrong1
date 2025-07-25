@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-// Set a target date for the countdown (e.g., New Year's)
+// Đặt ngày mục tiêu cho đồng hồ đếm ngược (ví dụ: Năm mới)
 const targetDate = new Date(`January 1, ${new Date().getFullYear() + 1} 00:00:00`);
 
 export default function CountdownWidget() {
@@ -29,7 +29,7 @@ export default function CountdownWidget() {
       return timeLeftData;
     };
 
-    // Set initial time on client
+    // Đặt thời gian ban đầu trên máy khách
     setTimeLeft(calculateTimeLeft());
 
     const timer = setInterval(() => {
@@ -39,6 +39,13 @@ export default function CountdownWidget() {
     return () => clearInterval(timer);
   }, []);
 
+  const intervalMapping: { [key: string]: string } = {
+    days: "ngày",
+    hours: "giờ",
+    minutes: "phút",
+    seconds: "giây",
+  };
+
   return (
     <div className="flex space-x-2 text-center">
       {Object.entries(timeLeft).length > 0 ? (
@@ -46,12 +53,12 @@ export default function CountdownWidget() {
           <div key={interval} className="flex flex-col items-center">
             <span className="text-2xl font-bold tabular-nums">{value}</span>
             <span className="text-xs uppercase text-muted-foreground">
-              {interval}
+              {intervalMapping[interval]}
             </span>
           </div>
         ))
       ) : (
-        <p className="text-muted-foreground">Event has passed!</p>
+        <p className="text-muted-foreground">Sự kiện đã qua!</p>
       )}
     </div>
   );

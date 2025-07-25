@@ -15,11 +15,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/portfolio", label: "Portfolio", icon: CodeXml },
-  { href: "/blog", label: "Blog", icon: Newspaper },
-  { href: "/faq", label: "FAQ", icon: HelpCircle },
-  { href: "/tools", label: "Tools", icon: Wrench },
+  { href: "/", label: "Trang chủ", icon: Home },
+  { href: "/portfolio", label: "Dự án", icon: CodeXml },
+  { href: "/blog", label: "Bài viết", icon: Newspaper },
+  { href: "/faq", label: "Hỏi đáp", icon: HelpCircle },
+  { href: "/tools", label: "Công cụ", icon: Wrench },
 ];
 
 export default function Header() {
@@ -31,7 +31,7 @@ export default function Header() {
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <Rss className="h-6 w-6 text-primary" />
           <span className="hidden font-headline font-bold sm:inline-block">
-            Personal Hub
+            Trung tâm cá nhân
           </span>
         </Link>
         <nav className="flex items-center space-x-1 sm:space-x-4">

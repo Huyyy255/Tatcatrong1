@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-// NOTE: In a real app, you would fetch this data from a weather API.
-// For this demo, we're using static data to avoid API key management.
+// LƯU Ý: Trong một ứng dụng thực tế, bạn sẽ lấy dữ liệu này từ một API thời tiết.
+// Đối với bản demo này, chúng tôi đang sử dụng dữ liệu tĩnh để tránh quản lý khóa API.
 const weatherData = {
   city: "San Francisco",
   temperature: "18",
-  condition: "Partly Cloudy",
+  condition: "Mây rải rác",
   icon: "⛅️",
 };
 
@@ -15,7 +15,7 @@ export default function WeatherWidget() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API fetch
+    // Mô phỏng tìm nạp API
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -23,7 +23,7 @@ export default function WeatherWidget() {
   }, []);
 
   if (loading) {
-    return <p className="text-muted-foreground">Loading weather...</p>;
+    return <p className="text-muted-foreground">Đang tải thời tiết...</p>;
   }
 
   return (
@@ -32,7 +32,7 @@ export default function WeatherWidget() {
       <div>
         <div className="text-2xl font-bold">{weatherData.temperature}°C</div>
         <p className="text-muted-foreground">
-          {weatherData.condition} in {weatherData.city}
+          {weatherData.condition} tại {weatherData.city}
         </p>
       </div>
     </div>

@@ -15,12 +15,12 @@ import {z} from 'genkit';
 
 
 const SuggestTrendingTopicsInputSchema = z.object({
-  pastArticles: z.array(z.string()).describe('An array of the user\'s past blog articles.'),
+  pastArticles: z.array(z.string()).describe('Một mảng các bài viết blog trước đây của người dùng.'),
 });
 export type SuggestTrendingTopicsInput = z.infer<typeof SuggestTrendingTopicsInputSchema>;
 
 const SuggestTrendingTopicsOutputSchema = z.object({
-  suggestedTopics: z.array(z.string()).describe('An array of suggested trending blog topics.'),
+  suggestedTopics: z.array(z.string()).describe('Một mảng các chủ đề blog thịnh hành được đề xuất.'),
 });
 export type SuggestTrendingTopicsOutput = z.infer<typeof SuggestTrendingTopicsOutputSchema>;
 
@@ -32,9 +32,9 @@ const prompt = ai.definePrompt({
   name: 'suggestTrendingTopicsPrompt',
   input: {schema: SuggestTrendingTopicsInputSchema},
   output: {schema: SuggestTrendingTopicsOutputSchema},
-  prompt: `You are a blog topic suggestion expert. Given the following list of past blog articles, suggest trending topics that the user could write about next. Return a list of trending topics.
+  prompt: `Bạn là một chuyên gia đề xuất chủ đề blog. Dựa trên danh sách các bài viết blog trước đây, hãy đề xuất các chủ đề thịnh hành mà người dùng có thể viết tiếp theo. Trả về một danh sách các chủ đề thịnh hành.
 
-Past Articles:
+Các bài viết trước đây:
 {{#each pastArticles}}
 - {{{this}}}
 {{/each}}

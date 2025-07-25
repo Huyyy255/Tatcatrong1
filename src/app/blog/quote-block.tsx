@@ -5,23 +5,23 @@ import { useEffect, useState } from "react";
 
 const quotes = [
   {
-    quote: "The best way to predict the future is to invent it.",
+    quote: "Cách tốt nhất để dự đoán tương lai là phát minh ra nó.",
     author: "Alan Kay",
   },
   {
-    quote: "Life is 10% what happens to you and 90% how you react to it.",
+    quote: "Cuộc sống là 10% những gì xảy ra với bạn và 90% cách bạn phản ứng với nó.",
     author: "Charles R. Swindoll",
   },
   {
-    quote: "Code is like humor. When you have to explain it, it’s bad.",
+    quote: "Mã nguồn giống như sự hài hước. Khi bạn phải giải thích nó, nó đã dở rồi.",
     author: "Cory House",
   },
   {
-    quote: "The only way to do great work is to love what you do.",
+    quote: "Cách duy nhất để làm nên việc lớn là yêu những gì bạn làm.",
     author: "Steve Jobs",
   },
   {
-    quote: "Simplicity is the soul of efficiency.",
+    quote: "Sự đơn giản là linh hồn của hiệu quả.",
     author: "Austin Freeman",
   },
 ];

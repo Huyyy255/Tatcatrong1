@@ -13,9 +13,9 @@ import { Button } from "@/components/ui/button";
 
 const projects = [
   {
-    title: "E-Commerce Platform",
+    title: "Nền Tảng Thương Mại Điện Tử",
     description:
-      "A full-featured e-commerce site with product management, shopping cart, and Stripe integration.",
+      "Một trang web thương mại điện tử đầy đủ tính năng với quản lý sản phẩm, giỏ hàng và tích hợp Stripe.",
     image: "https://placehold.co/600x400.png",
     tags: ["Next.js", "Firebase", "Stripe", "Tailwind CSS"],
     github: "#",
@@ -23,9 +23,9 @@ const projects = [
     aiHint: "online store",
   },
   {
-    title: "Task Management App",
+    title: "Ứng Dụng Quản Lý Công Việc",
     description:
-      "A collaborative task manager with real-time updates, boards, and user authentication.",
+      "Một trình quản lý công việc cộng tác với cập nhật thời gian thực, bảng và xác thực người dùng.",
     image: "https://placehold.co/600x400.png",
     tags: ["React", "Firestore", "Auth", "Framer Motion"],
     github: "#",
@@ -33,9 +33,9 @@ const projects = [
     aiHint: "kanban board",
   },
   {
-    title: "AI Content Generator",
+    title: "Trình Tạo Nội Dung AI",
     description:
-      "A SaaS application that uses generative AI to create marketing copy and blog posts.",
+      "Một ứng dụng SaaS sử dụng AI tạo sinh để tạo bản sao tiếp thị và bài đăng blog.",
     image: "https://placehold.co/600x400.png",
     tags: ["Next.js", "GenAI", "Vercel"],
     github: "#",
@@ -43,9 +43,9 @@ const projects = [
     aiHint: "robot writing",
   },
   {
-    title: "Personal Portfolio v1",
+    title: "Portfolio Cá Nhân v1",
     description:
-      "My previous portfolio website, built with simple HTML, CSS, and JavaScript.",
+      "Trang web portfolio trước đây của tôi, được xây dựng bằng HTML, CSS và JavaScript đơn giản.",
     image: "https://placehold.co/600x400.png",
     tags: ["HTML", "CSS", "JavaScript"],
     github: "#",
@@ -59,10 +59,10 @@ export default function PortfolioPage() {
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-12 text-center">
         <h1 className="font-headline text-4xl font-bold tracking-tight">
-          My Portfolio
+          Portfolio Của Tôi
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          A selection of projects I've worked on.
+          Một tuyển tập các dự án mà tôi đã thực hiện.
         </p>
       </div>
 
@@ -111,7 +111,7 @@ export default function PortfolioPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
+                  <ExternalLink className="mr-2 h-4 w-4" /> Demo trực tiếp
                 </Link>
               </Button>
             </CardFooter>

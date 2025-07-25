@@ -26,21 +26,21 @@ export default function Home() {
           John Doe
         </h1>
         <p className="mt-4 text-xl text-muted-foreground">
-          Full-Stack Developer & Tech Enthusiast
+          Lập Trình Viên Full-Stack & Người Đam Mê Công Nghệ
         </p>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-foreground/80">
-          Welcome to my digital space! I build modern web applications and love
-          to explore new technologies. Here you can find my projects, read my
-          thoughts on tech, and use some cool tools I've built.
+          Chào mừng đến với không gian số của tôi! Tôi xây dựng các ứng dụng web hiện đại và yêu
+          thích khám phá các công nghệ mới. Tại đây bạn có thể tìm thấy các dự án của tôi, đọc suy
+          nghĩ của tôi về công nghệ, và sử dụng một số công cụ thú vị mà tôi đã xây dựng.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Button asChild size="lg">
             <Link href="/portfolio">
-              View My Work <ArrowRight className="ml-2 h-5 w-5" />
+              Xem Dự Án Của Tôi <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="/blog">Read My Blog</Link>
+            <Link href="/blog">Đọc Blog Của Tôi</Link>
           </Button>
         </div>
       </section>
@@ -54,22 +54,22 @@ export default function Home() {
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <CardTitle className="font-headline">My Projects</CardTitle>
+                  <CardTitle className="font-headline">Dự Án Của Tôi</CardTitle>
                   <CardDescription>
-                    Explore the things I've built.
+                    Khám phá những thứ tôi đã xây dựng.
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <p>
-                From personal experiments to client work, my portfolio
-                showcases a range of projects demonstrating my skills in modern
-                web development.
+                Từ các thử nghiệm cá nhân đến công việc cho khách hàng, portfolio của tôi
+                trưng bày một loạt các dự án thể hiện kỹ năng của tôi trong phát triển
+                web hiện đại.
               </p>
               <Button asChild variant="link" className="mt-2 px-0">
                 <Link href="/portfolio">
-                  See Portfolio <ArrowRight className="ml-2 h-4 w-4" />
+                  Xem Portfolio <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </CardContent>
@@ -82,23 +82,23 @@ export default function Home() {
                 </div>
                 <div>
                   <CardTitle className="font-headline">
-                    Blog & Articles
+                    Blog & Bài Viết
                   </CardTitle>
                   <CardDescription>
-                    My thoughts on tech and development.
+                    Suy nghĩ của tôi về công nghệ và phát triển.
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <p>
-                I write about topics like Next.js, Firebase, GenAI, and
-                productivity. Follow along for tutorials, insights, and my
-                personal development journey.
+                Tôi viết về các chủ đề như Next.js, Firebase, GenAI, và
+                năng suất. Theo dõi để xem các bài hướng dẫn, thông tin chi tiết, và
+                hành trình phát triển cá nhân của tôi.
               </p>
               <Button asChild variant="link" className="mt-2 px-0">
                 <Link href="/blog">
-                  Visit Blog <ArrowRight className="ml-2 h-4 w-4" />
+                  Ghé Thăm Blog <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </CardContent>

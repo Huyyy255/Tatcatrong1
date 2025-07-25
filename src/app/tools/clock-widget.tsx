@@ -6,7 +6,7 @@ export default function ClockWidget() {
   const [time, setTime] = useState<Date | null>(null);
 
   useEffect(() => {
-    // Set initial time on client
+    // Đặt thời gian ban đầu trên máy khách
     setTime(new Date());
 
     const intervalId = setInterval(() => {
@@ -18,7 +18,7 @@ export default function ClockWidget() {
 
   return (
     <div className="text-2xl font-bold tabular-nums">
-      {time ? time.toLocaleTimeString() : "Loading..."}
+      {time ? time.toLocaleTimeString() : "Đang tải..."}
     </div>
   );
 }

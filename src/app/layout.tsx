@@ -4,8 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/header";
 
 export const metadata: Metadata = {
-  title: "All-in-One Personal Hub",
-  description: "A personal hub with portfolio, blog, and various tools.",
+  title: "Trung tâm cá nhân tất cả trong một",
+  description: "Một trung tâm cá nhân với portfolio, blog, và nhiều công cụ khác.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="vi" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

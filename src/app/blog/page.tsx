@@ -20,9 +20,9 @@ import QuoteBlock from "./quote-block";
 const allPosts = [
   {
     slug: "mastering-nextjs-14",
-    title: "Mastering Next.js 14: A Deep Dive into the App Router",
+    title: "Làm chủ Next.js 14: Tìm hiểu sâu về App Router",
     excerpt:
-      "Explore the new App Router, Server Components, and other powerful features in Next.js 14.",
+      "Khám phá App Router, Server Components mới và các tính năng mạnh mẽ khác trong Next.js 14.",
     image: "https://placehold.co/600x400.png",
     aiHint: "code screen",
     tags: ["Next.js", "React", "Web Development"],
@@ -31,9 +31,9 @@ const allPosts = [
   },
   {
     slug: "firebase-for-beginners",
-    title: "Firebase for Beginners: Auth, Firestore, and Storage",
+    title: "Firebase cho người mới bắt đầu: Auth, Firestore và Storage",
     excerpt:
-      "A comprehensive guide to getting started with Firebase for your web and mobile applications.",
+      "Hướng dẫn toàn diện để bắt đầu với Firebase cho các ứng dụng web và di động của bạn.",
     image: "https://placehold.co/600x400.png",
     aiHint: "database schema",
     tags: ["Firebase", "Backend", "Database"],
@@ -42,9 +42,9 @@ const allPosts = [
   },
   {
     slug: "generative-ai-in-practice",
-    title: "Generative AI in Practice: Building with Genkit",
+    title: "AI tạo sinh trong thực tế: Xây dựng với Genkit",
     excerpt:
-      "Learn how to integrate powerful generative AI features into your apps using Google's Genkit.",
+      "Tìm hiểu cách tích hợp các tính năng AI tạo sinh mạnh mẽ vào ứng dụng của bạn bằng Genkit của Google.",
     image: "https://placehold.co/600x400.png",
     aiHint: "abstract art",
     tags: ["AI", "Genkit", "Google Cloud"],
@@ -53,9 +53,9 @@ const allPosts = [
   },
   {
     slug: "the-art-of-tailwind-css",
-    title: "The Art of Tailwind CSS: Tips and Tricks",
+    title: "Nghệ thuật của Tailwind CSS: Mẹo và thủ thuật",
     excerpt:
-      "Level up your styling game with advanced Tailwind CSS techniques for beautiful and responsive UIs.",
+      "Nâng cao kỹ năng tạo kiểu của bạn với các kỹ thuật Tailwind CSS nâng cao để có giao diện người dùng đẹp và đáp ứng.",
     image: "https://placehold.co/600x400.png",
     aiHint: "color palette",
     tags: ["CSS", "Tailwind CSS", "Design"],
@@ -82,10 +82,10 @@ export default function BlogPage() {
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
         <h1 className="font-headline text-4xl font-bold tracking-tight">
-          My Blog
+          Blog của tôi
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          Insights, tutorials, and stories about technology and development.
+          Những hiểu biết, hướng dẫn và câu chuyện về công nghệ và phát triển.
         </p>
       </div>
 
@@ -95,7 +95,7 @@ export default function BlogPage() {
         <div className="relative w-full md:flex-grow">
           <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search articles..."
+            placeholder="Tìm kiếm bài viết..."
             className="pl-10"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -106,7 +106,7 @@ export default function BlogPage() {
             variant={selectedTag === null ? "default" : "outline"}
             onClick={() => setSelectedTag(null)}
           >
-            All
+            Tất cả
           </Button>
           {allTags.map((tag) => (
             <Button
@@ -159,7 +159,7 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="flex items-center text-primary hover:underline"
               >
-                Read More <ArrowRight className="ml-1 h-4 w-4" />
+                Đọc thêm <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
             </CardFooter>
           </Card>
@@ -168,7 +168,7 @@ export default function BlogPage() {
       {filteredPosts.length === 0 && (
         <div className="col-span-full py-16 text-center">
           <p className="text-muted-foreground">
-            No articles found. Try a different search or filter.
+            Không tìm thấy bài viết nào. Hãy thử tìm kiếm hoặc bộ lọc khác.
           </p>
         </div>
       )}
