@@ -46,14 +46,14 @@ export default function Home() {
         <div className="mt-8 flex justify-center gap-4">
             <Button size="lg" asChild>
                 <Link href="/portfolio">
-                    <CodeXml className="mr-2"/>
-                    Xem Portfolio
+                    <Gift className="mr-2"/>
+                    Xem Quà
                 </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
                 <Link href="/blog">
                     <Newspaper className="mr-2"/>
-                    Đọc Blog
+                    Đọc Lời chúc
                 </Link>
             </Button>
         </div>
