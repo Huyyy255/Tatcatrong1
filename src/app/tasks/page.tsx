@@ -51,7 +51,7 @@ export default function TasksPage() {
       completed: false,
       dueDate: null,
     };
-    setTasks([...tasks, newTask]);
+    setTasks([newTask, ...tasks]);
     setNewTaskText("");
   };
 
@@ -85,6 +85,7 @@ export default function TasksPage() {
   const getDaysLeft = (dueDate: string | null) => {
     if (!dueDate) return null;
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Bỏ qua giờ để so sánh ngày
     const due = new Date(dueDate);
     const diffTime = due.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -144,7 +145,7 @@ export default function TasksPage() {
                         {task.text}
                       </label>
                     )}
-                    {task.dueDate && (
+                    {task.dueDate && !task.completed && (
                       <div className="text-xs text-muted-foreground mt-1">
                         <Badge variant={
                           (getDaysLeft(task.dueDate) ?? 0) < 0 ? "destructive" :
@@ -153,6 +154,7 @@ export default function TasksPage() {
                         }>
                           {
                             (getDaysLeft(task.dueDate) ?? 0) < 0 ? `Quá hạn ${Math.abs(getDaysLeft(task.dueDate) ?? 0)} ngày` :
+                             (getDaysLeft(task.dueDate) ?? 0) === 0 ? `Hết hạn hôm nay` :
                             `Còn lại ${getDaysLeft(task.dueDate)} ngày`
                           }
                         </Badge>
@@ -161,15 +163,15 @@ export default function TasksPage() {
                   </div>
                   <div className="flex gap-1">
                     {editingTaskId === task.id ? (
-                        <Button variant="ghost" size="icon" onClick={() => handleSaveEdit(task.id)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleSaveEdit(task.id)}>
                             <Save className="h-4 w-4" />
                         </Button>
                     ) : (
-                        <Button variant="ghost" size="icon" onClick={() => startEditing(task)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => startEditing(task)}>
                             <Edit className="h-4 w-4" />
                         </Button>
                     )}
-                    <Button variant="ghost" size="icon" onClick={() => handleDeleteTask(task.id)}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleDeleteTask(task.id)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
                   </div>
@@ -193,7 +195,7 @@ export default function TasksPage() {
                         {task.text}
                       </label>
                     </div>
-                  <Button variant="ghost" size="icon" onClick={() => handleDeleteTask(task.id)}>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleDeleteTask(task.id)}>
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
