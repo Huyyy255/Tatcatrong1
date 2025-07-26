@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -36,7 +37,7 @@ export default function ToolsPage() {
                 <CardTitle>So sánh phiên bản Code</CardTitle>
             </div>
             <CardDescription>
-                Dán hai phiên bản code và để AI giải thích sự khác biệt giữa chúng.
+                Dán hai phiên bản code và để AI giải thích sự khác biệt giữa chúng, giúp bạn hiểu rõ những thay đổi một cách nhanh chóng.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -66,7 +67,7 @@ export default function ToolsPage() {
                 <CardTitle>Xem trước Code trực tiếp</CardTitle>
             </div>
             <CardDescription>
-                Thử nghiệm nhanh các đoạn mã HTML, CSS và JavaScript và xem kết quả ngay lập tức.
+                Thử nghiệm nhanh các đoạn mã HTML, CSS và JavaScript và xem kết quả ngay lập tức mà không cần rời khỏi trang.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -75,11 +76,14 @@ export default function ToolsPage() {
         </Card>
         
         <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Tạo ảnh bằng AI
-            </CardTitle>
-            <ImageIcon className="h-4 w-4 text-muted-foreground" />
+           <CardHeader>
+            <div className="flex items-center gap-2">
+              <ImageIcon className="h-6 w-6 text-primary" />
+              <CardTitle>Tạo ảnh bằng AI</CardTitle>
+            </div>
+            <CardDescription>
+              Biến ý tưởng của bạn thành hình ảnh. Nhập một mô tả văn bản và để AI tạo ra một hình ảnh độc đáo cho bạn.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <ImageGenerator />
@@ -87,11 +91,14 @@ export default function ToolsPage() {
         </Card>
         
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Thời tiết hiện tại
-            </CardTitle>
-            <CloudSun className="h-4 w-4 text-muted-foreground" />
+           <CardHeader>
+            <div className="flex items-center gap-2">
+              <CloudSun className="h-6 w-6 text-primary" />
+              <CardTitle>Thời tiết</CardTitle>
+            </div>
+            <CardDescription>
+              Xem thông tin thời tiết hiện tại của các tỉnh thành Việt Nam.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <WeatherWidget />
@@ -100,23 +107,29 @@ export default function ToolsPage() {
 
         <div className="grid grid-cols-2 gap-8 md:col-span-2">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Đồng hồ thời gian thực
-              </CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
+             <CardHeader>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-6 w-6 text-primary" />
+                  <CardTitle>Đồng hồ</CardTitle>
+                </div>
+                <CardDescription>
+                  Xem thời gian hiện tại với độ chính xác đến từng giây.
+                </CardDescription>
+              </CardHeader>
             <CardContent>
               <ClockWidget />
             </CardContent>
           </Card>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Đếm ngược sự kiện
-              </CardTitle>
-              <Timer className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
+            <CardHeader>
+                <div className="flex items-center gap-2">
+                  <Timer className="h-6 w-6 text-primary" />
+                  <CardTitle>Đếm ngược</CardTitle>
+                </div>
+                <CardDescription>
+                  Đếm ngược đến một sự kiện quan trọng trong tương lai.
+                </CardDescription>
+              </CardHeader>
             <CardContent>
               <CountdownWidget />
             </CardContent>
@@ -124,11 +137,14 @@ export default function ToolsPage() {
         </div>
 
         <Card className="md:col-span-2 lg:col-span-3">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Gợi ý chủ đề thịnh hành
-            </CardTitle>
-            <BrainCircuit className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <BrainCircuit className="h-6 w-6 text-primary" />
+              <CardTitle>Gợi ý chủ đề</CardTitle>
+            </div>
+            <CardDescription>
+              Nhận các gợi ý chủ đề blog thịnh hành từ AI dựa trên các bài viết trước đây của bạn.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <TrendingTopics />

@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { motion } from "framer-motion";
 import { Cloud, CloudRain, CloudSun as CloudSunIcon, Sun, Zap } from "lucide-react";
 
 
@@ -50,29 +49,17 @@ const weatherIcons = {
 function WeatherCard({ city, data }: { city: string; data: { temperature: string; condition: string; conditionKey: keyof typeof weatherIcons } }) {
   const Icon = weatherIcons[data.conditionKey] || Sun;
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="rounded-2xl bg-card p-6 text-card-foreground shadow-lg transition-transform hover:scale-105 hover:shadow-xl"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-xl font-bold">{city}</h3>
-          <p className="text-sm text-muted-foreground">{data.condition}</p>
+    <div className="space-y-4">
+        <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+                <Icon className="h-8 w-8 text-primary" />
+                <div>
+                     <p className="font-bold text-xl">{data.temperature}°C</p>
+                     <p className="text-sm text-muted-foreground">{data.condition}</p>
+                </div>
+            </div>
         </div>
-        <motion.div
-          animate={{ rotate: [0, 360] }}
-          transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
-        >
-          <Icon className="h-12 w-12 text-primary" />
-        </motion.div>
-      </div>
-      <div className="mt-6 flex items-end justify-between">
-        <p className="font-headline text-5xl font-bold">{data.temperature}°C</p>
-        <p className="text-xs text-muted-foreground">Vừa cập nhật</p>
-      </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -113,8 +100,8 @@ export default function WeatherWidget() {
         </Select>
 
         {loading ? (
-            <div className="space-y-2">
-              <Skeleton className="h-[158px] w-full rounded-2xl" />
+            <div className="space-y-2 pt-4">
+              <Skeleton className="h-10 w-full" />
             </div>
         ) : (
             <WeatherCard city={selectedCity} data={weatherData} />
