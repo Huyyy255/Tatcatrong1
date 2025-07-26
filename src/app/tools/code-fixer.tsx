@@ -8,10 +8,18 @@ import {
   fixAndExplainCode,
   FixAndExplainCodeOutput,
 } from "@/ai/flows/fix-and-explain-code";
+import { 
+    translateCode,
+    TranslateCodeOutput
+} from "@/ai/flows/translate-code";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, Wand2, Loader2, FileCode, CheckCircle } from "lucide-react";
+import { Wand2, Loader2, Languages, CheckCircle, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+
+const languages = ["JavaScript", "Python", "Java", "C++", "TypeScript", "Go", "Rust"];
 
 const defaultCode = `
 import { useState } from "react";
@@ -44,19 +52,25 @@ export default function SliderButton() {
 `.trim();
 
 export default function CodeFixer() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<"fix" | "translate" | false>(false);
   const [code, setCode] = useState(defaultCode);
-  const [result, setResult] = useState<FixAndExplainCodeOutput | null>(null);
+  const [sourceLang, setSourceLang] = useState("JavaScript");
+  const [targetLang, setTargetLang] = useState("Python");
+  const [result, setResult] = useState<FixAndExplainCodeOutput | TranslateCodeOutput | null>(null);
+  const [explanation, setExplanation] = useState<string | null>(null);
+
   const { toast } = useToast();
 
   const handleAnalyzeCode = async () => {
     if (!code) return;
 
-    setLoading(true);
+    setLoading("fix");
     setResult(null);
+    setExplanation(null);
     try {
       const res = await fixAndExplainCode({ code });
       setResult(res);
+      setExplanation(res.explanation);
     } catch (error) {
       console.error("Failed to fix code:", error);
       toast({
@@ -69,6 +83,35 @@ export default function CodeFixer() {
     }
   };
 
+  const handleTranslateCode = async () => {
+    if (!code) return;
+
+    setLoading("translate");
+    setResult(null);
+    setExplanation(null);
+    try {
+        const res = await translateCode({ code, sourceLanguage: sourceLang, targetLanguage: targetLang });
+        setResult(res);
+        setExplanation(`Đoạn mã đã được dịch từ ${sourceLang} sang ${targetLang}.`);
+    } catch (error) {
+        console.error("Failed to translate code:", error);
+        toast({
+            title: "Lỗi",
+            description: "Không thể dịch mã. Vui lòng thử lại.",
+            variant: "destructive",
+        });
+    } finally {
+        setLoading(false);
+    }
+  }
+
+  const getOutputCode = () => {
+    if (!result) return "";
+    if ('fixedCode' in result) return result.fixedCode;
+    if ('translatedCode' in result) return result.translatedCode;
+    return "";
+  }
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -80,23 +123,23 @@ export default function CodeFixer() {
             onChange={(e) => setCode(e.target.value)}
             placeholder="Nhập hoặc dán mã của bạn vào đây..."
             className="h-48 font-mono text-sm"
-            disabled={loading}
+            disabled={!!loading}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="output-code">Mã đã sửa</Label>
+          <Label htmlFor="output-code">Mã đã sửa / dịch</Label>
           <Textarea
             id="output-code"
-            value={result?.fixedCode ?? ""}
+            value={getOutputCode()}
             readOnly
-            placeholder="Mã đã được sửa lỗi sẽ xuất hiện ở đây..."
+            placeholder="Kết quả sẽ xuất hiện ở đây..."
             className="h-48 bg-muted font-mono text-sm"
           />
         </div>
       </div>
-      <div className="flex justify-center">
-        <Button onClick={handleAnalyzeCode} disabled={loading || !code}>
-          {loading ? (
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <Button onClick={handleAnalyzeCode} disabled={!!loading || !code}>
+          {loading === 'fix' ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Đang phân tích...
@@ -108,15 +151,49 @@ export default function CodeFixer() {
             </>
           )}
         </Button>
+        
+        <div className="flex items-center gap-2">
+            <Select onValueChange={setSourceLang} defaultValue={sourceLang} disabled={!!loading}>
+                <SelectTrigger className="w-[140px]">
+                    <SelectValue placeholder="Ngôn ngữ gốc" />
+                </SelectTrigger>
+                <SelectContent>
+                    {languages.map(lang => <SelectItem key={lang} value={lang}>{lang}</SelectItem>)}
+                </SelectContent>
+            </Select>
+            <ArrowRight className="h-4 w-4 text-muted-foreground"/>
+             <Select onValueChange={setTargetLang} defaultValue={targetLang} disabled={!!loading}>
+                <SelectTrigger className="w-[140px]">
+                    <SelectValue placeholder="Ngôn ngữ đích" />
+                </SelectTrigger>
+                <SelectContent>
+                    {languages.map(lang => <SelectItem key={lang} value={lang}>{lang}</SelectItem>)}
+                </SelectContent>
+            </Select>
+        </div>
+
+         <Button onClick={handleTranslateCode} disabled={!!loading || !code || sourceLang === targetLang} variant="outline">
+          {loading === 'translate' ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Đang dịch...
+            </>
+          ) : (
+            <>
+              <Languages className="mr-2 h-4 w-4" />
+              Dịch mã
+            </>
+          )}
+        </Button>
       </div>
-      {result && (
+      {explanation && (
         <Card>
           <CardContent className="p-4">
             <h3 className="mb-2 flex items-center font-semibold">
               <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
               Giải thích từ AI
             </h3>
-            <p className="text-sm text-muted-foreground">{result.explanation}</p>
+            <p className="text-sm text-muted-foreground">{explanation}</p>
           </CardContent>
         </Card>
       )}
