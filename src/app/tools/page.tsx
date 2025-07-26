@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardDescription
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, CloudSun, Code, FileCode, ImageIcon, Timer } from "lucide-react";
+import { BrainCircuit, Clock, CloudSun, Code, FileCode, ImageIcon, Timer, GitCompare } from "lucide-react";
 import WeatherWidget from "./weather-widget";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
@@ -13,6 +13,8 @@ import TrendingTopics from "./trending-topics";
 import ImageGenerator from "./image-generator";
 import CodeFixer from "./code-fixer";
 import LiveCodePreview from "./live-code-preview";
+import CodeComparator from "./code-comparator";
+
 
 export default function ToolsPage() {
   return (
@@ -27,6 +29,21 @@ export default function ToolsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="lg:col-span-3">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+                <GitCompare className="h-6 w-6 text-primary" />
+                <CardTitle>So sánh phiên bản Code</CardTitle>
+            </div>
+            <CardDescription>
+                Dán hai phiên bản code và để AI giải thích sự khác biệt giữa chúng.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <CodeComparator />
+          </CardContent>
+        </Card>
+
         <Card className="lg:col-span-3">
           <CardHeader>
             <div className="flex items-center gap-2">
