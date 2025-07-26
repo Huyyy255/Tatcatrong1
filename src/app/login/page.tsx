@@ -68,7 +68,7 @@ export default function LoginPage() {
                     <form onSubmit={handleSubmit} className="relative z-20 p-8 space-y-6">
                         <div className="flex flex-col items-center justify-center space-y-2 mb-6 text-center">
                             <h1 className="text-3xl font-bold font-headline text-foreground tracking-wider">
-                                {isMaintenanceMode ? "BẢO TRÌ" : "Đăng nhập vào Origin OS"}
+                                {isMaintenanceMode ? "BẢO TRÌ" : "Đăng nhập"}
                             </h1>
                             <p className="text-sm text-muted-foreground">
                                 Chào mừng trở lại!

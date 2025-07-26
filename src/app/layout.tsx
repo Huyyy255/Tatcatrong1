@@ -48,9 +48,9 @@ import AuthDependentUI from "./auth-dependent-ui";
 
 
 export const metadata: Metadata = {
-  title: "Origin OS 5",
+  title: "All-in-One Personal Hub",
   description:
-    "Một hệ điều hành cá nhân với portfolio, blog, và nhiều công cụ khác.",
+    "Một trung tâm cá nhân với portfolio, blog, và nhiều công cụ khác.",
 };
 
 export default function RootLayout({

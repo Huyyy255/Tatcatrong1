@@ -93,7 +93,7 @@ export default function AuthDependentUI({ children }: { children: React.ReactNod
                 </Link>
                 </Button>
                 <span className="font-headline font-bold">
-                Origin OS 5
+                Personal Hub
                 </span>
             </div>
             </SidebarHeader>

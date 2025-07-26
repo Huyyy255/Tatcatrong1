@@ -51,12 +51,12 @@ export default function Home() {
       {isBirthdayTheme && startBirthdayExperience && <BirthdayExperience />}
       <section className="mb-16 text-center">
         <h1 className="font-headline text-5xl font-bold tracking-tight">
-         {isBirthdayTheme ? "Chúc mừng sinh nhật, Huy!" : "Chào mừng đến với Origin OS 5"}
+         {isBirthdayTheme ? "Chúc mừng sinh nhật, Huy!" : "All-in-One Personal Hub"}
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
           {isBirthdayTheme 
             ? "Đây là một ngày đặc biệt! Hôm nay là ngày của bạn. Chúc bạn một tuổi mới tràn đầy niềm vui, thành công và những dòng code đẹp."
-            : "Hệ điều hành cá nhân của bạn. Nơi mọi thứ được sắp xếp, sáng tạo và hoàn thành."
+            : "Một trung tâm cá nhân để giới thiệu dự án, viết blog và sử dụng các công cụ tiện ích."
           }
         </p>
         <div className="mt-8 flex justify-center gap-4">
