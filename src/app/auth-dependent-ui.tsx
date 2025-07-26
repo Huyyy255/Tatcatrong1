@@ -84,7 +84,7 @@ export default function AuthDependentUI({ children }: { children: React.ReactNod
 
     return (
         <>
-        <Sidebar>
+        <Sidebar variant="floating">
             <SidebarHeader>
             <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" asChild>
@@ -194,11 +194,11 @@ export default function AuthDependentUI({ children }: { children: React.ReactNod
             </SidebarFooter>
         </Sidebar>
         <SidebarInset>
-            <header className="flex h-16 items-center justify-between border-b px-6">
-            <SidebarTrigger className="md:hidden" />
-            <div className="flex items-center gap-2">
-                <ThemeToggle />
-            </div>
+            <header className="sticky top-0 z-40 h-16 items-center justify-between border-b bg-background/80 px-6 backdrop-blur-md flex">
+                <SidebarTrigger className="md:hidden" />
+                <div className="flex items-center gap-2 ml-auto">
+                    <ThemeToggle />
+                </div>
             </header>
             <main>{children}</main>
         </SidebarInset>

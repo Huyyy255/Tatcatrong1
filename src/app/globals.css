@@ -23,7 +23,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-    --radius: 0.75rem;
+    --radius: 1rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -34,7 +34,7 @@
   .dark {
     --background: 222.2 84% 4.9%; /* Deep blue-black */
     --foreground: 210 40% 98%; /* Almost white */
-    --card: 222.2 84% 4.9%;
+    --card: 224 71.4% 10%;
     --card-foreground: 210 40% 98%;
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 40% 98%;
