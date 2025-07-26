@@ -3,6 +3,7 @@
 
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 const colors = [
   "bg-blue-500",
@@ -24,13 +25,30 @@ const animationDurations = [
   "animate-[move_16s_ease-in-out_infinite_6s]",
 ];
 
+interface Position {
+  top: string;
+  left: string;
+}
+
 export default function AnimatedBackground() {
   const { resolvedTheme } = useTheme();
+  const [positions, setPositions] = useState<Position[]>([]);
+
+  useEffect(() => {
+    // Generate random positions only on the client side
+    const generatePositions = () => {
+      return colors.map(() => ({
+        top: `${Math.random() * 80}%`,
+        left: `${Math.random() * 80}%`,
+      }));
+    };
+    setPositions(generatePositions());
+  }, []);
 
   return (
     <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden">
       <div className="relative h-full w-full">
-        {colors.map((color, index) => (
+        {positions.length > 0 && colors.map((color, index) => (
           <div
             key={index}
             className={cn(
@@ -40,9 +58,8 @@ export default function AnimatedBackground() {
               resolvedTheme === "light" ? "mix-blend-multiply" : "mix-blend-lighten"
             )}
             style={{
-                // Random initial positions
-                top: `${Math.random() * 80}%`,
-                left: `${Math.random() * 80}%`,
+              top: positions[index].top,
+              left: positions[index].left,
             }}
           />
         ))}
