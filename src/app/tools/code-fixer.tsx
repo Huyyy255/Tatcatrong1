@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -12,9 +13,39 @@ import { ArrowRight, Wand2, Loader2, FileCode, CheckCircle } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
+const defaultCode = `
+import { useState } from "react";
+import { motion } from "framer-motion";
+
+export default function SliderButton() {
+  const [toggled, setToggled] = useState(false);
+
+  return (
+    <div
+      onClick={() => setToggled(!toggled)}
+      className="relative w-24 h-12 bg-muted rounded-full cursor-pointer p-1 shadow-inner"
+    >
+      <motion.div
+        className="w-10 h-10 bg-background rounded-full shadow-lg"
+        layout
+        transition={{
+          type: "spring",
+          stiffness: 700,
+          damping: 30,
+        }}
+        animate={{
+          x: toggled ? 48 : 0,
+        }}
+        whileTap={{ scale: 0.9 }}
+      />
+    </div>
+  );
+}
+`.trim();
+
 export default function CodeFixer() {
   const [loading, setLoading] = useState(false);
-  const [code, setCode] = useState("pinrt('Hello World!')");
+  const [code, setCode] = useState(defaultCode);
   const [result, setResult] = useState<FixAndExplainCodeOutput | null>(null);
   const { toast } = useToast();
 
