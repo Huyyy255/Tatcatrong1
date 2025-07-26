@@ -95,7 +95,7 @@ export default function Home() {
         <h2 className="font-headline mb-8 text-center text-3xl font-bold">Dự án nổi bật</h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {featuredProjects.map((project) => (
-                <Card key={project.title} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+                <Card key={project.title} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl rounded-2xl">
                      <CardHeader className="p-0">
                         <Image
                             src={project.image}
@@ -124,7 +124,7 @@ export default function Home() {
         <h2 className="font-headline mb-8 text-center text-3xl font-bold">Bài viết gần đây</h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
            {recentPosts.map((post) => (
-             <Card key={post.slug} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+             <Card key={post.slug} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl rounded-2xl">
                  <Link href={`/blog/${post.slug}`} className="block">
                      <CardHeader className="p-0">
                          <Image

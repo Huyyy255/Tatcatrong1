@@ -16,7 +16,6 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import {
-  Animation,
   BotMessageSquare,
   ClipboardCopy,
   Code2,
@@ -30,10 +29,11 @@ import {
   Mail,
   Newspaper,
   Rss,
-  Wrench,
   Palette,
   Star,
   User,
+  Sparkles,
+  Sun,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -61,14 +61,17 @@ const utilitiesNav = [
   { href: "/notes", label: "Ghi chú", icon: FileText },
   { href: "/snippets", label: "Snippets", icon: ClipboardCopy },
   { href: "/favorites", label: "Yêu thích", icon: Star },
-  { href: "/code-translator", label: "Dịch mã đa năng", icon: Code2 },
-  { href: "/animations", label: "Hoạt ảnh", icon: Palette},
   { href: "/faq", label: "Hỏi đáp", icon: HelpCircle },
 ]
 
 const toolsNav = [
    { href: "/chat", label: "Trợ lý AI", icon: BotMessageSquare },
-   { href: "/tools", label: "Công cụ", icon: Wrench },
+   { href: "/tools", label: "Công cụ", icon: Sparkles },
+   { href: "/code-translator", label: "Dịch mã đa năng", icon: Code2 },
+]
+
+const lifestyleNav = [
+    { href: "/animations", label: "Hoạt ảnh", icon: Palette},
 ]
 
 export default function AuthDependentUI({ children }: { children: React.ReactNode }) {
@@ -124,6 +127,21 @@ export default function AuthDependentUI({ children }: { children: React.ReactNod
                 <SidebarGroupLabel>Công cụ AI</SidebarGroupLabel>
                 <SidebarMenu>
                     {toolsNav.map((link) => (
+                    <SidebarMenuItem key={link.href}>
+                        <SidebarMenuButton asChild tooltip={{ children: link.label }}>
+                        <Link href={link.href}>
+                            <link.icon />
+                            <span>{link.label}</span>
+                        </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    ))}
+                </SidebarMenu>
+            </SidebarGroup>
+            <SidebarGroup>
+                <SidebarGroupLabel>Đời sống</SidebarGroupLabel>
+                <SidebarMenu>
+                    {lifestyleNav.map((link) => (
                     <SidebarMenuItem key={link.href}>
                         <SidebarMenuButton asChild tooltip={{ children: link.label }}>
                         <Link href={link.href}>
