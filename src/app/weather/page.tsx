@@ -10,9 +10,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Cloud, CloudRain, CloudSun as CloudSunIcon, Sun, Zap, Thermometer, Wind } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { Cloud, CloudRain, CloudSun as CloudSunIcon, Sun, Zap } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 
 const provinces = [
@@ -49,8 +49,6 @@ interface WeatherData {
     hourly: { time: string; temp: number }[];
 }
 
-
-// NOTE: In a real app, you would fetch this from a weather API.
 const mockWeatherData: { [key: string]: WeatherData } = {
     "Hà Nội": { temperature: 28, condition: "Nhiều mây", conditionKey: "cloudy", uv: "Trung bình", temp_min: 26, temp_max: 30, hourly: hourlyData.map(h => ({...h, temp: h.temp - 3})) },
     "TP. Hồ Chí Minh": { temperature: 32, condition: "Nắng gắt", conditionKey: "sunny", uv: "Cao", temp_min: 28, temp_max: 34, hourly: hourlyData },
@@ -140,7 +138,7 @@ function WeatherCard({ city, data }: { city: string; data: WeatherData }) {
 }
 
 
-export default function WeatherWidget() {
+export default function WeatherPage() {
   const [loading, setLoading] = useState(true);
   const [selectedCity, setSelectedCity] = useState("TP. Hồ Chí Minh");
 
@@ -165,27 +163,38 @@ export default function WeatherWidget() {
 
 
   return (
-    <div className="space-y-4">
-        <Select onValueChange={setSelectedCity} defaultValue={selectedCity}>
-            <SelectTrigger className="w-full md:w-1/3">
-                <SelectValue placeholder="Chọn tỉnh thành" />
-            </SelectTrigger>
-            <SelectContent>
-                {provinces.map(province => (
-                <SelectItem key={province} value={province}>
-                    {province}
-                </SelectItem>
-                ))}
-            </SelectContent>
-        </Select>
+    <div className="container mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+            <h1 className="font-headline text-4xl font-bold tracking-tight">
+                Dự báo thời tiết
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+                Xem thông tin thời tiết hiện tại cho các tỉnh thành Việt Nam.
+            </p>
+        </div>
 
-        {loading ? (
-            <div className="space-y-2 pt-4">
-              <Skeleton className="h-64 w-full" />
-            </div>
-        ) : (
-            <WeatherCard city={selectedCity} data={weatherData} />
-        )}
+        <div className="space-y-4">
+            <Select onValueChange={setSelectedCity} defaultValue={selectedCity}>
+                <SelectTrigger>
+                    <SelectValue placeholder="Chọn tỉnh thành" />
+                </SelectTrigger>
+                <SelectContent>
+                    {provinces.map(province => (
+                    <SelectItem key={province} value={province}>
+                        {province}
+                    </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+
+            {loading ? (
+                <Card className="h-[430px] w-full flex items-center justify-center">
+                    <Skeleton className="h-full w-full" />
+                </Card>
+            ) : (
+                <WeatherCard city={selectedCity} data={weatherData} />
+            )}
+        </div>
     </div>
   );
 }

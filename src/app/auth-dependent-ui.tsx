@@ -35,6 +35,7 @@ import {
   Sparkles,
   Sun,
   Laugh,
+  CloudSun,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -57,7 +58,7 @@ const mainNav = [
   { href: "/contact", label: "Liên hệ", icon: Mail },
 ];
 
-const utilitiesNav = [
+const mainAppNav = [
   { href: "/tasks",label: "Công việc", icon: ListTodo },
   { href: "/notes", label: "Ghi chú", icon: FileText },
   { href: "/snippets", label: "Snippets", icon: ClipboardCopy },
@@ -74,6 +75,7 @@ const toolsNav = [
 const lifestyleNav = [
     { href: "/animations", label: "Hoạt ảnh", icon: Palette},
     { href: "/memes", label: "Tạo ảnh & Meme", icon: Laugh },
+    { href: "/weather", label: "Thời tiết", icon: CloudSun },
 ]
 
 export default function AuthDependentUI({ children }: { children: React.ReactNode }) {
@@ -111,9 +113,9 @@ export default function AuthDependentUI({ children }: { children: React.ReactNod
                 </SidebarMenu>
             </SidebarGroup>
             <SidebarGroup>
-                <SidebarGroupLabel>Tiện ích</SidebarGroupLabel>
+                <SidebarGroupLabel>Ứng dụng</SidebarGroupLabel>
                 <SidebarMenu>
-                    {utilitiesNav.map((link) => (
+                    {mainAppNav.map((link) => (
                     <SidebarMenuItem key={link.href}>
                         <SidebarMenuButton asChild tooltip={{ children: link.label }}>
                         <Link href={link.href}>

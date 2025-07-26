@@ -6,8 +6,7 @@ import {
   CardTitle,
   CardDescription
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, CloudSun, Code, FileCode, ImageIcon, Timer, GitCompare } from "lucide-react";
-import WeatherWidget from "./weather-widget";
+import { BrainCircuit, Clock, Code, FileCode, Timer, GitCompare } from "lucide-react";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";
@@ -74,45 +73,29 @@ export default function ToolsPage() {
           </CardContent>
         </Card>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:col-span-3">
-            <Card className="md:col-span-2">
+        <div className="grid grid-cols-2 gap-8 lg:col-span-3">
+            <Card>
                 <CardHeader>
                     <div className="flex items-center gap-2">
-                    <CloudSun className="h-6 w-6 text-primary" />
-                    <CardTitle>Thời tiết</CardTitle>
+                    <Clock className="h-6 w-6 text-primary" />
+                    <CardTitle>Đồng hồ</CardTitle>
                     </div>
-                    <CardDescription>
-                    Xem thông tin thời tiết hiện tại của các tỉnh thành Việt Nam.
-                    </CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <WeatherWidget />
+                <CardContent className="flex justify-center pt-4">
+                    <ClockWidget />
                 </CardContent>
             </Card>
-            <div className="grid grid-cols-2 gap-8">
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center gap-2">
-                        <Clock className="h-6 w-6 text-primary" />
-                        <CardTitle>Đồng hồ</CardTitle>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="flex justify-center pt-4">
-                        <ClockWidget />
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center gap-2">
-                        <Timer className="h-6 w-6 text-primary" />
-                        <CardTitle>Đếm ngược</CardTitle>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="flex justify-center pt-4">
-                        <CountdownWidget />
-                    </CardContent>
-                </Card>
-            </div>
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                    <Timer className="h-6 w-6 text-primary" />
+                    <CardTitle>Đếm ngược</CardTitle>
+                    </div>
+                </CardHeader>
+                <CardContent className="flex justify-center pt-4">
+                    <CountdownWidget />
+                </CardContent>
+            </Card>
         </div>
        
         <Card className="lg:col-span-3">
