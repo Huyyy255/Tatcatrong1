@@ -67,7 +67,7 @@ export default function RegisterPage() {
             <LoadingOverlay show={loading} />
             <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] bg-background/95 px-4">
                 <div className="login-card-container">
-                    <form onSubmit={handleSubmit} className="relative z-20 bg-card p-8 rounded-lg shadow-2xl space-y-6 border border-border">
+                    <form onSubmit={handleSubmit} className="relative z-20 bg-card p-8 rounded-2xl shadow-2xl space-y-6 border border-border">
                         <div className="flex items-center justify-center space-x-3 mb-6">
                             <UserPlus className="w-8 h-8 text-cyan-400"/>
                             <h1 className="text-3xl font-bold text-foreground tracking-wider">REGISTER</h1>
@@ -142,4 +142,3 @@ export default function RegisterPage() {
         </>
     );
 }
-
