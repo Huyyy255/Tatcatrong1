@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -18,11 +19,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
+   webpack: (config, { isServer }) => {
     if (!isServer) {
-        config.externals.push({
-            'html2canvas': 'html2canvas',
-        });
+        // Đây là cách đúng để xử lý các gói chỉ dành cho client
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            'html2canvas': false,
+        };
     }
     return config;
   },
