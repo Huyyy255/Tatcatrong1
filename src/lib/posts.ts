@@ -10,7 +10,7 @@ export const allPosts = [
       image: "https://placehold.co/800x400.png",
       aiHint: "code screen",
       tags: ["Next.js", "React", "Web Development"],
-      author: "John Doe",
+      author: "Huy",
       date: "2024-05-15",
     },
     {
@@ -22,7 +22,7 @@ export const allPosts = [
       image: "https://placehold.co/800x400.png",
       aiHint: "database schema",
       tags: ["Firebase", "Backend", "Database"],
-      author: "John Doe",
+      author: "Huy",
       date: "2024-04-22",
     },
     {
@@ -34,7 +34,7 @@ export const allPosts = [
       image: "https://placehold.co/800x400.png",
       aiHint: "abstract art",
       tags: ["AI", "Genkit", "Google Cloud"],
-      author: "John Doe",
+      author: "Huy",
       date: "2024-03-10",
     },
     {
@@ -46,7 +46,7 @@ export const allPosts = [
       image: "https://placehold.co/800x400.png",
       aiHint: "color palette",
       tags: ["CSS", "Tailwind CSS", "Design"],
-      author: "John Doe",
+      author: "Huy",
       date: "2024-02-01",
     },
   ];

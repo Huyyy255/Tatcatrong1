@@ -53,9 +53,8 @@ export default function BlogPostPage({
         <Image
           src={post.image}
           alt={post.title}
-          layout="fill"
-          objectFit="cover"
-          className="h-auto w-full"
+          fill
+          className="object-cover"
           data-ai-hint={post.aiHint}
         />
       </div>
