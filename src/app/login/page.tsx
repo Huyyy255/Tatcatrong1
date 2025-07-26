@@ -17,9 +17,20 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { toast } = useToast();
+    const isMaintenanceMode = true; // Bật/tắt chế độ bảo trì ở đây
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
+        if (isMaintenanceMode) {
+            toast({
+                title: "Thông báo bảo trì",
+                description: "Hệ thống đang tạm thời bảo trì để nâng cấp. Vui lòng quay lại sau.",
+                variant: "destructive",
+            });
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -57,7 +68,9 @@ export default function LoginPage() {
                     <form onSubmit={handleSubmit} className="relative z-20 bg-card p-8 rounded-lg shadow-2xl space-y-6 border border-border">
                         <div className="flex items-center justify-center space-x-3 mb-6">
                             <LogIn className="w-8 h-8 text-cyan-400"/>
-                            <h1 className="text-3xl font-bold text-foreground tracking-wider">LOGIN</h1>
+                            <h1 className="text-3xl font-bold text-foreground tracking-wider">
+                                {isMaintenanceMode ? "BẢO TRÌ" : "LOGIN"}
+                            </h1>
                             <Heart className="w-8 h-8 text-pink-500"/>
                         </div>
                         
@@ -72,7 +85,7 @@ export default function LoginPage() {
                                     placeholder="Enter your email" 
                                     className="mt-1 bg-background/50 border-border focus:ring-cyan-500 focus:border-cyan-500"
                                     required
-                                    disabled={loading}
+                                    disabled={loading || isMaintenanceMode}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -87,7 +100,7 @@ export default function LoginPage() {
                                     placeholder="Enter your password" 
                                     className="mt-1 bg-background/50 border-border focus:ring-cyan-500 focus:border-cyan-500"
                                     required
-                                    disabled={loading}
+                                    disabled={loading || isMaintenanceMode}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
@@ -97,9 +110,9 @@ export default function LoginPage() {
                         <Button 
                             type="submit"
                             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg transition-all duration-300 transform hover:scale-105"
-                            disabled={loading}
+                            disabled={loading || isMaintenanceMode}
                         >
-                            Sign In
+                            {isMaintenanceMode ? "Đang bảo trì" : "Sign In"}
                         </Button>
                         
                         <div className="flex justify-between items-center text-sm">
