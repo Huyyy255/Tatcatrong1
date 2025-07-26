@@ -36,6 +36,7 @@ const mockWeatherData: { [key: string]: { temperature: string; condition: string
     "Đà Nẵng": { temperature: "30", condition: "Mây rải rác", conditionKey: "partly-cloudy" },
     "Cần Thơ": { temperature: "31", condition: "Có mưa rào", conditionKey: "rainy" },
     "Hải Phòng": { temperature: "29", condition: "Có dông", conditionKey: "stormy" },
+    "Thanh Hóa": { temperature: "27", condition: "Nắng nhẹ", conditionKey: "partly-cloudy" },
 };
 
 const weatherIcons = {
@@ -78,7 +79,7 @@ function WeatherCard({ city, data }: { city: string; data: { temperature: string
 
 export default function WeatherWidget() {
   const [loading, setLoading] = useState(true);
-  const [selectedCity, setSelectedCity] = useState("Hà Nội");
+  const [selectedCity, setSelectedCity] = useState("Thanh Hóa");
 
   const weatherData = mockWeatherData[selectedCity] || {
     temperature: (Math.floor(Math.random() * 10) + 25).toString(), // Random temp

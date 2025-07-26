@@ -22,7 +22,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Trash2, Edit, Plus, Search, X, Sparkles, Loader2, AudioLines } from "lucide-react";
+import { Trash2, Edit, Plus, Search, X, Sparkles, Loader2, AudioLines, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { summarizeNote, SummarizeNoteOutput } from "@/ai/flows/summarize-note";
 import { textToSpeech, TextToSpeechOutput } from "@/ai/flows/text-to-speech";
@@ -37,6 +37,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
+import { cn } from "@/lib/utils";
 
 
 interface Note {
@@ -45,6 +46,7 @@ interface Note {
   content: string;
   tags: string[];
   createdAt: string;
+  isFavorite: boolean;
 }
 
 // Separate state for the form/dialog to avoid mixing with main notes data
@@ -97,6 +99,7 @@ export default function NotesPage() {
             "Xây dựng một ứng dụng theo dõi thói quen để giúp mọi người hình thành những thói quen tốt. Tích hợp gamification để tăng động lực. Cần xem xét các tính năng như đặt mục tiêu hàng ngày, theo dõi tiến độ qua biểu đồ, và hệ thống phần thưởng khi đạt được cột mốc quan trọng. Giao diện cần đơn giản, thân thiện và tạo cảm hứng cho người dùng.",
           tags: ["dự án", "ý tưởng", "react"],
           createdAt: new Date().toISOString(),
+          isFavorite: false,
         },
         {
           id: 2,
@@ -105,6 +108,7 @@ export default function NotesPage() {
             "Công thức món gà nướng sả ớt:\n- 500g đùi gà, rửa sạch, để ráo.\n- 3 cây sả, 2 quả ớt băm nhuyễn.\n- Gia vị: 2 muỗng canh nước mắm, 1 muỗng canh đường, 1/2 muỗng cà phê tiêu, 1 muỗng cà phê hạt nêm.\n- Trộn đều gà với sả, ớt và các gia vị. Ướp ít nhất 30 phút.\n- Làm nóng lò nướng ở 200°C. Cho gà vào nướng trong 20-25 phút, hoặc cho đến khi gà chín vàng đều. Có thể lật gà giữa chừng để đảm bảo gà chín đều hai mặt.",
           tags: ["nấu ăn", "công thức"],
           createdAt: new Date().toISOString(),
+          isFavorite: true,
         },
       ]);
       }
@@ -137,6 +141,7 @@ export default function NotesPage() {
         content,
         tags: tagsArray,
         createdAt: new Date().toISOString(),
+        isFavorite: false,
       };
       setNotes([newNoteToAdd, ...notes]);
     }
@@ -206,6 +211,14 @@ export default function NotesPage() {
       setIsAudioLoading(false);
     }
   }
+
+  const handleToggleFavorite = (id: number) => {
+    setNotes(
+      notes.map((note) =>
+        note.id === id ? { ...note, isFavorite: !note.isFavorite } : note
+      )
+    );
+  };
 
   const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -330,6 +343,15 @@ export default function NotesPage() {
                 {new Date(note.createdAt).toLocaleDateString("vi-VN")}
               </span>
               <div className="flex gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => handleToggleFavorite(note.id)}
+                  title="Đánh dấu yêu thích"
+                >
+                  <Star className={cn("h-4 w-4", note.isFavorite && "fill-yellow-400 text-yellow-400")}/>
+                </Button>
                  <Button
                   variant="ghost"
                   size="icon"
@@ -426,5 +448,3 @@ export default function NotesPage() {
     </div>
   );
 }
-
-    
