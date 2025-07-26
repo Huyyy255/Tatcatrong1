@@ -6,7 +6,6 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import anime from 'animejs';
 import { cn } from '@/lib/utils';
 import { Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -155,77 +154,6 @@ function StaggeredList() {
     );
 }
 
-function LetterGridAnimation() {
-  const animationRef = useRef<anime.AnimeInstance | null>(null);
-  
-  const text = "ORIGINOS";
-  const rows = 4;
-  const cols = 8;
-  const totalCells = rows * cols;
-  const cells = Array.from({ length: totalCells });
-
-  useEffect(() => {
-    // Create the animation timeline once the component is mounted
-    animationRef.current = anime.timeline({
-        targets: '.letter-grid .letter',
-        delay: anime.stagger(100, {grid: [cols, rows], from: 'center'}),
-        loop: false,
-        autoplay: true, // Start automatically on mount
-    })
-    .add({
-        scale: [
-            {value: .1, easing: 'easeOutSine', duration: 500},
-            {value: 1, easing: 'easeInOutQuad', duration: 1200}
-        ],
-    })
-    .add({
-        color: 'hsl(var(--primary-foreground))',
-        backgroundColor: 'hsl(var(--primary))',
-        duration: 1000,
-    }, '-=1200');
-
-    // Pause the animation when the component unmounts
-    return () => animationRef.current?.pause();
-  }, []); // Empty dependency array ensures this runs only once on mount
-
-  const runAnimation = () => {
-    if (animationRef.current) {
-      animationRef.current.restart();
-    }
-  }
-
-  return (
-    <div className='flex flex-col items-center gap-4'>
-        <div 
-            className="letter-grid grid w-full max-w-sm"
-            style={{
-                gridTemplateColumns: `repeat(${cols}, 1fr)`
-            }}
-        >
-            {cells.map((_, i) => {
-                const char = text[i % text.length];
-                return (
-                    <div 
-                        key={i} 
-                        className={cn(
-                            "letter flex items-center justify-center aspect-square",
-                            "font-headline font-bold text-lg md:text-xl",
-                            "bg-muted text-transparent rounded-sm"
-                        )}
-                    >
-                        {char}
-                    </div>
-                )
-            })}
-        </div>
-        <Button onClick={runAnimation} size="sm">
-            <Play className="mr-2 h-4 w-4" />
-            Chạy lại
-        </Button>
-    </div>
-  )
-}
-
 
 export default function AnimationsPage() {
     return (
@@ -290,17 +218,6 @@ export default function AnimationsPage() {
                      <CardContent>
                         <div className="p-4 rounded-lg border-2 border-dashed">
                              <StaggeredList />
-                        </div>
-                    </CardContent>
-                </Card>
-                 <Card className="md:col-span-2">
-                    <CardHeader>
-                        <CardTitle>Hoạt ảnh lưới chữ (Anime.js)</CardTitle>
-                        <CardDescription>Hiệu ứng lưới chữ sử dụng thư viện Anime.js.</CardDescription>
-                    </CardHeader>
-                     <CardContent>
-                        <div className="p-4 rounded-lg border-2 border-dashed">
-                            <LetterGridAnimation />
                         </div>
                     </CardContent>
                 </Card>
