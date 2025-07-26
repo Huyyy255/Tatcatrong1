@@ -26,15 +26,31 @@ import { Trash2, Edit, Plus, Search, X, Clipboard, Check, Star } from "lucide-re
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  orderBy,
+  Timestamp,
+} from "firebase/firestore";
+import LoadingOverlay from "@/components/ui/loading-overlay";
 
 interface Snippet {
-  id: number;
+  id: string;
   title: string;
   description: string;
   code: string;
   tags: string[];
-  createdAt: string;
+  createdAt: Timestamp;
   isFavorite: boolean;
+  userId: string;
 }
 
 type SnippetFormData = {
@@ -58,76 +74,60 @@ export default function SnippetsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSnippet, setEditingSnippet] = useState<Snippet | null>(null);
   const [formData, setFormData] = useState<SnippetFormData>(initialFormData);
-  const [copiedStates, setCopiedStates] = useState<{[key: number]: boolean}>({});
-
+  const [copiedStates, setCopiedStates] = useState<{[key: string]: boolean}>({});
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
-    try {
-      const savedSnippets = localStorage.getItem("snippets");
-      if (savedSnippets) {
-        setSnippets(JSON.parse(savedSnippets));
-      } else {
-         setSnippets([
-          {
-            id: 1,
-            title: "React Hook: useDebounce",
-            description: "Một hook tùy chỉnh để trì hoãn việc thực thi một hàm, hữu ích cho việc tìm kiếm hoặc tự động lưu.",
-            code: 
-`import { useState, useEffect } from 'react';
-
-function useDebounce(value, delay) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
-}`,
-            tags: ["react", "hook", "typescript"],
-            createdAt: new Date().toISOString(),
-            isFavorite: false,
-          },
-         ]);
-      }
-    } catch (error) {
-       console.error("Failed to parse snippets from localStorage", error);
-       setSnippets([]);
+    if (!user) {
+      setSnippets([]);
+      setLoading(false);
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem("snippets", JSON.stringify(snippets));
-  }, [snippets]);
+    setLoading(true);
+    const snippetsCollection = collection(db, "snippets");
+    const q = query(
+        snippetsCollection, 
+        where("userId", "==", user.uid),
+        orderBy("createdAt", "desc")
+    );
 
-  const handleFormSubmit = () => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const userSnippets = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Snippet[];
+      setSnippets(userSnippets);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching snippets:", error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const handleFormSubmit = async () => {
     const { title, code, tags, description } = formData;
-    if (title.trim() === "" || code.trim() === "") return;
+    if (title.trim() === "" || code.trim() === "" || !user) return;
 
     const tagsArray = tags.split(",").map((tag) => tag.trim()).filter(Boolean);
 
     if (editingSnippet) {
-      const updatedSnippet: Snippet = { ...editingSnippet, title, description, code, tags: tagsArray };
-      setSnippets(snippets.map((s) => (s.id === editingSnippet.id ? updatedSnippet : s)));
+      const snippetDoc = doc(db, "snippets", editingSnippet.id);
+      await updateDoc(snippetDoc, { title, description, code, tags: tagsArray });
     } else {
-      const newId = snippets.length > 0 ? Math.max(...snippets.map((n) => n.id)) + 1 : 1;
-      const newSnippet: Snippet = {
-        id: newId,
+      await addDoc(collection(db, "snippets"), {
         title,
         description,
         code,
         tags: tagsArray,
-        createdAt: new Date().toISOString(),
+        createdAt: Timestamp.now(),
         isFavorite: false,
-      };
-      setSnippets([newSnippet, ...snippets]);
+        userId: user.uid
+      });
     }
     
     setIsModalOpen(false);
@@ -152,23 +152,21 @@ function useDebounce(value, delay) {
     setIsModalOpen(true);
   };
   
-  const handleDeleteSnippet = (id: number) => {
-    setSnippets(snippets.filter((snippet) => snippet.id !== id));
+  const handleDeleteSnippet = async (id: string) => {
+    const snippetDoc = doc(db, "snippets", id);
+    await deleteDoc(snippetDoc);
   };
   
-  const handleCopyCode = (id: number, code: string) => {
+  const handleCopyCode = (id: string, code: string) => {
     navigator.clipboard.writeText(code);
     setCopiedStates(prev => ({ ...prev, [id]: true }));
     toast({ title: "Đã sao chép!", description: "Đoạn mã đã được sao chép vào bộ nhớ tạm." });
     setTimeout(() => setCopiedStates(prev => ({ ...prev, [id]: false })), 2000);
   };
 
-  const handleToggleFavorite = (id: number) => {
-    setSnippets(
-      snippets.map((snippet) =>
-        snippet.id === id ? { ...snippet, isFavorite: !snippet.isFavorite } : snippet
-      )
-    );
+  const handleToggleFavorite = async (id: string, isFavorite: boolean) => {
+    const snippetDoc = doc(db, "snippets", id);
+    await updateDoc(snippetDoc, { isFavorite: !isFavorite });
   };
   
   const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -188,7 +186,22 @@ function useDebounce(value, delay) {
     );
   }, [snippets, searchTerm]);
 
+   if (!user) {
+      return (
+         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 text-center">
+             <h1 className="font-headline text-4xl font-bold tracking-tight">
+                Quản lý Snippet
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+                Vui lòng đăng nhập để xem và quản lý snippet của bạn.
+            </p>
+         </div>
+      )
+  }
+
   return (
+    <>
+    <LoadingOverlay show={loading} />
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
         <div className="text-center md:text-left">
@@ -294,7 +307,7 @@ function useDebounce(value, delay) {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 flex-shrink-0"
-                        onClick={() => handleToggleFavorite(snippet.id)}
+                        onClick={() => handleToggleFavorite(snippet.id, snippet.isFavorite)}
                         title="Đánh dấu yêu thích"
                     >
                         <Star className={cn("h-5 w-5", snippet.isFavorite && "fill-yellow-400 text-yellow-400")}/>
@@ -327,7 +340,7 @@ function useDebounce(value, delay) {
             </CardContent>
             <CardFooter className="flex items-center justify-between text-sm text-muted-foreground">
               <span>
-                Tạo vào: {new Date(snippet.createdAt).toLocaleDateString("vi-VN")}
+                Tạo vào: {snippet.createdAt.toDate().toLocaleDateString("vi-VN")}
               </span>
               <div className="flex gap-1">
                 <Button
@@ -351,7 +364,7 @@ function useDebounce(value, delay) {
           </Card>
         ))}
       </div>
-      {filteredSnippets.length === 0 && (
+      {filteredSnippets.length === 0 && !loading && (
         <div className="py-16 text-center">
           <p className="text-muted-foreground">
             Không tìm thấy snippet nào. Hãy tạo một snippet mới!
@@ -359,5 +372,6 @@ function useDebounce(value, delay) {
         </div>
       )}
     </div>
+    </>
   );
 }

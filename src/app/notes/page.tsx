@@ -38,22 +38,37 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  orderBy,
+  Timestamp,
+} from "firebase/firestore";
+import LoadingOverlay from "@/components/ui/loading-overlay";
 
 
 interface Note {
-  id: number;
+  id: string;
   title: string;
   content: string;
   tags: string[];
-  createdAt: string;
+  createdAt: Timestamp;
   isFavorite: boolean;
+  userId: string;
 }
 
-// Separate state for the form/dialog to avoid mixing with main notes data
 type NoteFormData = {
   title: string;
   content: string;
-  tags: string; // Tags are handled as a single comma-separated string in the form
+  tags: string; 
 };
 
 const initialFormData: NoteFormData = {
@@ -66,18 +81,17 @@ const initialFormData: NoteFormData = {
 export default function NotesPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
   
-  // State for Add/Edit dialog
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [formData, setFormData] = useState<NoteFormData>(initialFormData);
 
-  // State for Summary dialog
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
   const [summary, setSummary] = useState<SummarizeNoteOutput | null>(null);
   
-  // State for Audio dialog
   const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [audio, setAudio] = useState<TextToSpeechOutput | null>(null);
@@ -86,64 +100,53 @@ export default function NotesPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    try {
-      const savedNotes = localStorage.getItem("notes");
-      if (savedNotes) {
-        setNotes(JSON.parse(savedNotes));
-      } else {
-         setNotes([
-        {
-          id: 1,
-          title: "Ý tưởng cho dự án mới",
-          content:
-            "Xây dựng một ứng dụng theo dõi thói quen để giúp mọi người hình thành những thói quen tốt. Tích hợp gamification để tăng động lực. Cần xem xét các tính năng như đặt mục tiêu hàng ngày, theo dõi tiến độ qua biểu đồ, và hệ thống phần thưởng khi đạt được cột mốc quan trọng. Giao diện cần đơn giản, thân thiện và tạo cảm hứng cho người dùng.",
-          tags: ["dự án", "ý tưởng", "react"],
-          createdAt: new Date().toISOString(),
-          isFavorite: false,
-        },
-        {
-          id: 2,
-          title: "Công thức nấu ăn: Gà nướng sả ớt",
-          content:
-            "Công thức món gà nướng sả ớt:\n- 500g đùi gà, rửa sạch, để ráo.\n- 3 cây sả, 2 quả ớt băm nhuyễn.\n- Gia vị: 2 muỗng canh nước mắm, 1 muỗng canh đường, 1/2 muỗng cà phê tiêu, 1 muỗng cà phê hạt nêm.\n- Trộn đều gà với sả, ớt và các gia vị. Ướp ít nhất 30 phút.\n- Làm nóng lò nướng ở 200°C. Cho gà vào nướng trong 20-25 phút, hoặc cho đến khi gà chín vàng đều. Có thể lật gà giữa chừng để đảm bảo gà chín đều hai mặt.",
-          tags: ["nấu ăn", "công thức"],
-          createdAt: new Date().toISOString(),
-          isFavorite: true,
-        },
-      ]);
-      }
-    } catch (error) {
-       console.error("Failed to parse notes from localStorage", error);
-       setNotes([]);
+    if (!user) {
+      setNotes([]);
+      setLoading(false);
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
+    setLoading(true);
+    const notesCollection = collection(db, "notes");
+    const q = query(
+      notesCollection, 
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc")
+    );
 
-  const handleFormSubmit = () => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const userNotes = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Note[];
+      setNotes(userNotes);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching notes:", error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const handleFormSubmit = async () => {
     const { title, content, tags } = formData;
-    if (title.trim() === "" || content.trim() === "") return;
+    if (title.trim() === "" || content.trim() === "" || !user) return;
 
     const tagsArray = tags.split(",").map((tag) => tag.trim()).filter(Boolean);
 
     if (editingNote) {
-      // Update existing note
-      const updatedNote: Note = { ...editingNote, title, content, tags: tagsArray };
-      setNotes(notes.map((note) => (note.id === editingNote.id ? updatedNote : note)));
+      const noteDoc = doc(db, "notes", editingNote.id);
+      await updateDoc(noteDoc, { title, content, tags: tagsArray });
     } else {
-      // Add new note
-      const newId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) + 1 : 1;
-      const newNoteToAdd: Note = {
-        id: newId,
+      await addDoc(collection(db, "notes"), {
         title,
         content,
         tags: tagsArray,
-        createdAt: new Date().toISOString(),
+        createdAt: Timestamp.now(),
         isFavorite: false,
-      };
-      setNotes([newNoteToAdd, ...notes]);
+        userId: user.uid,
+      });
     }
     
     setIsModalOpen(false);
@@ -167,8 +170,9 @@ export default function NotesPage() {
     setIsModalOpen(true);
   };
   
-  const handleDeleteNote = (id: number) => {
-    setNotes(notes.filter((note) => note.id !== id));
+  const handleDeleteNote = async (id: string) => {
+    const noteDoc = doc(db, "notes", id);
+    await deleteDoc(noteDoc);
   };
   
   const handleSummarizeNote = async (content: string) => {
@@ -212,12 +216,9 @@ export default function NotesPage() {
     }
   }
 
-  const handleToggleFavorite = (id: number) => {
-    setNotes(
-      notes.map((note) =>
-        note.id === id ? { ...note, isFavorite: !note.isFavorite } : note
-      )
-    );
+  const handleToggleFavorite = async (id: string, isFavorite: boolean) => {
+    const noteDoc = doc(db, "notes", id);
+    await updateDoc(noteDoc, { isFavorite: !isFavorite });
   };
 
   const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -236,8 +237,23 @@ export default function NotesPage() {
         )
     );
   }, [notes, searchTerm]);
+  
+  if (!user) {
+      return (
+         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 text-center">
+             <h1 className="font-headline text-4xl font-bold tracking-tight">
+                Ghi chú cá nhân
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+                Vui lòng đăng nhập để xem và quản lý ghi chú của bạn.
+            </p>
+         </div>
+      )
+  }
 
   return (
+    <>
+    <LoadingOverlay show={loading} />
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
         <div className="text-center md:text-left">
@@ -340,14 +356,14 @@ export default function NotesPage() {
             </CardContent>
             <CardFooter className="flex items-center justify-between text-sm text-muted-foreground">
               <span>
-                {new Date(note.createdAt).toLocaleDateString("vi-VN")}
+                {note.createdAt.toDate().toLocaleDateString("vi-VN")}
               </span>
               <div className="flex gap-1">
                 <Button
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8"
-                  onClick={() => handleToggleFavorite(note.id)}
+                  onClick={() => handleToggleFavorite(note.id, note.isFavorite)}
                   title="Đánh dấu yêu thích"
                 >
                   <Star className={cn("h-4 w-4", note.isFavorite && "fill-yellow-400 text-yellow-400")}/>
@@ -391,7 +407,7 @@ export default function NotesPage() {
           </Card>
         ))}
       </div>
-      {filteredNotes.length === 0 && (
+      {filteredNotes.length === 0 && !loading && (
         <div className="col-span-full py-16 text-center">
           <p className="text-muted-foreground">
             Không tìm thấy ghi chú nào. Hãy tạo một ghi chú mới!
@@ -446,5 +462,6 @@ export default function NotesPage() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+    </>
   );
 }

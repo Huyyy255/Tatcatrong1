@@ -9,71 +9,94 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Plus, Edit, Save } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useAutoAnimate } from "@/hooks/use-auto-animate";
+import { useAuth } from "@/hooks/use-auth";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  orderBy,
+  Timestamp,
+} from "firebase/firestore";
+import LoadingOverlay from "@/components/ui/loading-overlay";
 
 interface Task {
-  id: number;
+  id: string;
   text: string;
   completed: boolean;
   dueDate: string | null;
+  createdAt: Timestamp;
+  userId: string;
 }
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskText, setNewTaskText] = useState("");
-  const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editingTaskText, setEditingTaskText] = useState("");
-
+  const [loading, setLoading] = useState(true);
+  
+  const { user } = useAuth();
   const [uncompletedListRef] = useAutoAnimate<HTMLDivElement>();
   const [completedListRef] = useAutoAnimate<HTMLDivElement>();
 
   useEffect(() => {
-    // Tải công việc từ localStorage khi component được mount
-    try {
-        const savedTasks = localStorage.getItem("tasks");
-        if (savedTasks) {
-          setTasks(JSON.parse(savedTasks));
-        } else {
-          // Dữ liệu mẫu nếu không có gì trong localStorage
-          setTasks([
-            { id: 1, text: "Thiết kế giao diện cho dashboard", completed: true, dueDate: "2024-08-15" },
-            { id: 2, text: "Phát triển API cho tính năng ghi chú", completed: false, dueDate: "2024-08-20" },
-            { id: 3, text: "Tích hợp cổng thanh toán", completed: false, dueDate: null },
-          ]);
-        }
-    } catch (error) {
-        console.error("Failed to parse tasks from localStorage", error);
-        setTasks([]);
+    if (!user) {
+      setLoading(false);
+      setTasks([]);
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    // Lưu công việc vào localStorage mỗi khi danh sách thay đổi
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    setLoading(true);
+    const tasksCollection = collection(db, "tasks");
+    const q = query(
+        tasksCollection, 
+        where("userId", "==", user.uid),
+        orderBy("createdAt", "desc")
+    );
 
-  const handleAddTask = (e: React.FormEvent) => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const userTasks = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Task[];
+      setTasks(userTasks);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching tasks:", error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newTaskText.trim() === "") return;
-    const newTask: Task = {
-      id: Date.now(),
+    if (newTaskText.trim() === "" || !user) return;
+    
+    await addDoc(collection(db, "tasks"), {
       text: newTaskText,
       completed: false,
       dueDate: null,
-    };
-    setTasks([newTask, ...tasks]);
+      createdAt: Timestamp.now(),
+      userId: user.uid,
+    });
     setNewTaskText("");
   };
 
-  const handleToggleTask = (id: number) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+  const handleToggleTask = async (id: string, completed: boolean) => {
+    const taskDoc = doc(db, "tasks", id);
+    await updateDoc(taskDoc, { completed: !completed });
   };
 
-  const handleDeleteTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const handleDeleteTask = async (id: string) => {
+    const taskDoc = doc(db, "tasks", id);
+    await deleteDoc(taskDoc);
   };
 
   const startEditing = (task: Task) => {
@@ -81,12 +104,10 @@ export default function TasksPage() {
     setEditingTaskText(task.text);
   };
 
-  const handleSaveEdit = (id: number) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, text: editingTaskText } : task
-      )
-    );
+  const handleSaveEdit = async (id: string) => {
+    if (editingTaskText.trim() === "") return;
+    const taskDoc = doc(db, "tasks", id);
+    await updateDoc(taskDoc, { text: editingTaskText });
     setEditingTaskId(null);
     setEditingTaskText("");
   };
@@ -94,7 +115,7 @@ export default function TasksPage() {
   const getDaysLeft = (dueDate: string | null) => {
     if (!dueDate) return null;
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Bỏ qua giờ để so sánh ngày
+    today.setHours(0, 0, 0, 0);
     const due = new Date(dueDate);
     const diffTime = due.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -104,7 +125,22 @@ export default function TasksPage() {
   const uncompletedTasks = tasks.filter(task => !task.completed);
   const completedTasks = tasks.filter(task => task.completed);
 
+  if (!user) {
+      return (
+         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 text-center">
+             <h1 className="font-headline text-4xl font-bold tracking-tight">
+                Quản lý Công việc
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+                Vui lòng đăng nhập để xem và quản lý công việc của bạn.
+            </p>
+         </div>
+      )
+  }
+
   return (
+    <>
+    <LoadingOverlay show={loading} />
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-12 text-center">
         <h1 className="font-headline text-4xl font-bold tracking-tight">
@@ -124,8 +160,9 @@ export default function TasksPage() {
               onChange={(e) => setNewTaskText(e.target.value)}
               placeholder="Ví dụ: Viết một bài blog về AI..."
               className="flex-grow"
+              disabled={loading}
             />
-            <Button type="submit" size="icon">
+            <Button type="submit" size="icon" disabled={loading}>
               <Plus />
             </Button>
           </form>
@@ -140,7 +177,7 @@ export default function TasksPage() {
                     <Checkbox
                         id={`task-${task.id}`}
                         checked={task.completed}
-                        onCheckedChange={() => handleToggleTask(task.id)}
+                        onCheckedChange={() => handleToggleTask(task.id, task.completed)}
                     />
                     <div className="flex-grow">
                     {editingTaskId === task.id ? (
@@ -200,7 +237,7 @@ export default function TasksPage() {
                     <Checkbox
                         id={`task-${task.id}`}
                         checked={task.completed}
-                        onCheckedChange={() => handleToggleTask(task.id)}
+                        onCheckedChange={() => handleToggleTask(task.id, task.completed)}
                     />
                     <div className="flex-grow">
                         <label htmlFor={`task-${task.id}`} className="text-sm text-muted-foreground line-through">
@@ -220,5 +257,6 @@ export default function TasksPage() {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }

@@ -11,88 +11,102 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clipboard, Star, Edit, Trash2 } from "lucide-react";
+import { Clipboard, Star } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useAuth } from "@/hooks/use-auth";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  updateDoc,
+  doc,
+  Timestamp,
+  orderBy,
+} from "firebase/firestore";
+import LoadingOverlay from "@/components/ui/loading-overlay";
 
-
-// Định nghĩa kiểu dữ liệu cho Note và Snippet
 interface Note {
-  id: number;
+  id: string;
   title: string;
   content: string;
   tags: string[];
-  createdAt: string;
+  createdAt: Timestamp;
   isFavorite: boolean;
 }
 
 interface Snippet {
-  id: number;
+  id: string;
   title: string;
   description: string;
   code: string;
   tags: string[];
-  createdAt: string;
+  createdAt: Timestamp;
   isFavorite: boolean;
 }
 
 export default function FavoritesPage() {
   const [favoriteNotes, setFavoriteNotes] = useState<Note[]>([]);
   const [favoriteSnippets, setFavoriteSnippets] = useState<Snippet[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
   const { toast } = useToast();
 
-  // Hàm tải dữ liệu yêu thích từ localStorage
-  const loadFavorites = () => {
-    try {
-      const allNotes: Note[] = JSON.parse(localStorage.getItem("notes") || "[]");
-      setFavoriteNotes(allNotes.filter(note => note.isFavorite));
-
-      const allSnippets: Snippet[] = JSON.parse(localStorage.getItem("snippets") || "[]");
-      setFavoriteSnippets(allSnippets.filter(snippet => snippet.isFavorite));
-    } catch (error) {
-      console.error("Failed to load favorites from localStorage", error);
-      toast({
-        title: "Lỗi",
-        description: "Không thể tải danh sách yêu thích.",
-        variant: "destructive"
-      });
-    }
-  };
-
   useEffect(() => {
-    loadFavorites();
-     // Lắng nghe sự kiện thay đổi localStorage từ các tab khác
-    const handleStorageChange = () => {
-        loadFavorites();
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => {
-        window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
+    if (!user) {
+      setFavoriteNotes([]);
+      setFavoriteSnippets([]);
+      setLoading(false);
+      return;
+    }
 
-  // Hàm bỏ yêu thích một ghi chú
-  const unloveNote = (id: number) => {
-    const allNotes: Note[] = JSON.parse(localStorage.getItem("notes") || "[]");
-    const updatedNotes = allNotes.map(note => 
-      note.id === id ? { ...note, isFavorite: false } : note
+    setLoading(true);
+
+    // Listener for favorite notes
+    const notesQuery = query(
+      collection(db, "notes"),
+      where("userId", "==", user.uid),
+      where("isFavorite", "==", true),
+      orderBy("createdAt", "desc")
     );
-    localStorage.setItem("notes", JSON.stringify(updatedNotes));
-    loadFavorites(); // Tải lại danh sách yêu thích
-     toast({ title: "Đã bỏ yêu thích ghi chú!" });
+    const unsubscribeNotes = onSnapshot(notesQuery, (snapshot) => {
+      const notes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Note[];
+      setFavoriteNotes(notes);
+      setLoading(false);
+    });
+
+    // Listener for favorite snippets
+    const snippetsQuery = query(
+      collection(db, "snippets"),
+      where("userId", "==", user.uid),
+      where("isFavorite", "==", true),
+      orderBy("createdAt", "desc")
+    );
+    const unsubscribeSnippets = onSnapshot(snippetsQuery, (snapshot) => {
+      const snippets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Snippet[];
+      setFavoriteSnippets(snippets);
+      setLoading(false);
+    });
+
+    return () => {
+      unsubscribeNotes();
+      unsubscribeSnippets();
+    };
+  }, [user]);
+
+  const unloveNote = async (id: string) => {
+    const noteDoc = doc(db, "notes", id);
+    await updateDoc(noteDoc, { isFavorite: false });
+    toast({ title: "Đã bỏ yêu thích ghi chú!" });
   };
 
-  // Hàm bỏ yêu thích một snippet
-  const unloveSnippet = (id: number) => {
-    const allSnippets: Snippet[] = JSON.parse(localStorage.getItem("snippets") || "[]");
-    const updatedSnippets = allSnippets.map(snippet =>
-      snippet.id === id ? { ...snippet, isFavorite: false } : snippet
-    );
-    localStorage.setItem("snippets", JSON.stringify(updatedSnippets));
-    loadFavorites(); // Tải lại danh sách yêu thích
+  const unloveSnippet = async (id: string) => {
+    const snippetDoc = doc(db, "snippets", id);
+    await updateDoc(snippetDoc, { isFavorite: false });
     toast({ title: "Đã bỏ yêu thích snippet!" });
   };
 
@@ -100,9 +114,23 @@ export default function FavoritesPage() {
     navigator.clipboard.writeText(code);
     toast({ title: "Đã sao chép!", description: "Đoạn mã đã được sao chép vào bộ nhớ tạm." });
   };
-
+  
+  if (!user) {
+      return (
+         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 text-center">
+             <h1 className="font-headline text-4xl font-bold tracking-tight">
+                Danh sách Yêu thích
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+                Vui lòng đăng nhập để xem các mục yêu thích của bạn.
+            </p>
+         </div>
+      )
+  }
 
   return (
+    <>
+    <LoadingOverlay show={loading} />
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
         <h1 className="font-headline text-4xl font-bold tracking-tight">
@@ -120,7 +148,7 @@ export default function FavoritesPage() {
         </TabsList>
         <TabsContent value="notes">
           <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {favoriteNotes.length > 0 ? (
+            {!loading && favoriteNotes.length > 0 ? (
               favoriteNotes.map((note) => (
                 <Card key={note.id} className="flex flex-col">
                   <CardHeader>
@@ -136,7 +164,7 @@ export default function FavoritesPage() {
                   </CardContent>
                   <CardFooter className="flex justify-between items-center">
                     <span className="text-xs text-muted-foreground">
-                        {new Date(note.createdAt).toLocaleDateString("vi-VN")}
+                        {note.createdAt.toDate().toLocaleDateString("vi-VN")}
                     </span>
                      <Button variant="ghost" size="icon" onClick={() => unloveNote(note.id)}>
                         <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
@@ -145,7 +173,7 @@ export default function FavoritesPage() {
                 </Card>
               ))
             ) : (
-              <p className="col-span-full text-center text-muted-foreground py-10">
+              !loading && <p className="col-span-full text-center text-muted-foreground py-10">
                 Bạn chưa có ghi chú yêu thích nào. Hãy đến trang <Link href="/notes" className="text-primary hover:underline">Ghi chú</Link> và đánh dấu sao nhé!
               </p>
             )}
@@ -153,7 +181,7 @@ export default function FavoritesPage() {
         </TabsContent>
         <TabsContent value="snippets">
           <div className="mt-6 space-y-6">
-             {favoriteSnippets.length > 0 ? (
+             {!loading && favoriteSnippets.length > 0 ? (
               favoriteSnippets.map((snippet) => (
                 <Card key={snippet.id}>
                    <CardHeader>
@@ -196,7 +224,7 @@ export default function FavoritesPage() {
                 </Card>
               ))
             ) : (
-                <p className="text-center text-muted-foreground py-10">
+                !loading && <p className="text-center text-muted-foreground py-10">
                     Bạn chưa có snippet yêu thích nào. Hãy đến trang <Link href="/snippets" className="text-primary hover:underline">Snippets</Link> và đánh dấu sao nhé!
                 </p>
             )}
@@ -204,6 +232,6 @@ export default function FavoritesPage() {
         </TabsContent>
       </Tabs>
     </div>
+    </>
   );
 }
-
