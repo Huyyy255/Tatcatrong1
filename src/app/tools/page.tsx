@@ -3,13 +3,15 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  CardDescription
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, CloudSun, ImageIcon, Timer } from "lucide-react";
+import { BrainCircuit, Clock, CloudSun, Code, ImageIcon, Timer } from "lucide-react";
 import WeatherWidget from "./weather-widget";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";
 import ImageGenerator from "./image-generator";
+import CodeFixer from "./code-fixer";
 
 export default function ToolsPage() {
   return (
@@ -24,6 +26,21 @@ export default function ToolsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="lg:col-span-3">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+                <Code className="h-6 w-6 text-primary" />
+                <CardTitle>Trình sửa lỗi và giải thích mã</CardTitle>
+            </div>
+            <CardDescription>
+                Dán đoạn mã của bạn vào đây, AI sẽ tìm lỗi, sửa chúng và giải thích cho bạn.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <CodeFixer />
+          </CardContent>
+        </Card>
+        
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
