@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Heart, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import LoadingOverlay from "@/components/ui/loading-overlay";
@@ -65,25 +65,26 @@ export default function LoginPage() {
             <LoadingOverlay show={loading} />
             <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] bg-background/95 px-4">
                 <div className="login-card-container">
-                    <form onSubmit={handleSubmit} className="relative z-20 bg-card p-8 rounded-2xl shadow-2xl space-y-6 border border-border">
-                        <div className="flex items-center justify-center space-x-3 mb-6">
-                            <LogIn className="w-8 h-8 text-cyan-400"/>
-                            <h1 className="text-3xl font-bold text-foreground tracking-wider">
-                                {isMaintenanceMode ? "BẢO TRÌ" : "LOGIN"}
+                    <form onSubmit={handleSubmit} className="relative z-20 p-8 space-y-6">
+                        <div className="flex flex-col items-center justify-center space-y-2 mb-6 text-center">
+                            <h1 className="text-3xl font-bold font-headline text-foreground tracking-wider">
+                                {isMaintenanceMode ? "BẢO TRÌ" : "Đăng nhập vào Origin OS"}
                             </h1>
-                            <Heart className="w-8 h-8 text-pink-500"/>
+                            <p className="text-sm text-muted-foreground">
+                                Chào mừng trở lại!
+                            </p>
                         </div>
                         
                         <div className="space-y-4">
                             <div>
-                                <Label className="text-sm font-medium text-muted-foreground" htmlFor="email">
+                                <Label className="text-xs font-medium text-muted-foreground" htmlFor="email">
                                     Email
                                 </Label>
                                 <Input 
                                     type="email" 
                                     id="email" 
                                     placeholder="Enter your email" 
-                                    className="mt-1 bg-background/50 border-border focus:ring-cyan-500 focus:border-cyan-500"
+                                    className="mt-1 bg-transparent/50 border-white/20 focus:ring-primary/50 focus:border-primary/50"
                                     required
                                     disabled={loading || isMaintenanceMode}
                                     value={email}
@@ -91,14 +92,14 @@ export default function LoginPage() {
                                 />
                             </div>
                             <div>
-                                <Label className="text-sm font-medium text-muted-foreground" htmlFor="password">
-                                    Password
+                                <Label className="text-xs font-medium text-muted-foreground" htmlFor="password">
+                                    Mật khẩu
                                 </Label>
                                 <Input 
                                     type="password" 
                                     id="password" 
                                     placeholder="Enter your password" 
-                                    className="mt-1 bg-background/50 border-border focus:ring-cyan-500 focus:border-cyan-500"
+                                    className="mt-1 bg-transparent/50 border-white/20 focus:ring-primary/50 focus:border-primary/50"
                                     required
                                     disabled={loading || isMaintenanceMode}
                                     value={password}
@@ -109,18 +110,19 @@ export default function LoginPage() {
                         
                         <Button 
                             type="submit"
-                            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg transition-all duration-300 transform hover:scale-105"
+                            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base transition-all duration-300 transform hover:scale-105"
                             disabled={loading || isMaintenanceMode}
                         >
-                            {isMaintenanceMode ? "Đang bảo trì" : "Sign In"}
+                             <LogIn className="mr-2 h-4 w-4" />
+                            {isMaintenanceMode ? "Đang bảo trì" : "Đăng nhập"}
                         </Button>
                         
-                        <div className="flex justify-between items-center text-sm">
+                        <div className="flex justify-between items-center text-xs">
                             <Link href="#" className="font-medium text-muted-foreground hover:text-primary">
-                                Forgot Password?
+                                Quên mật khẩu?
                             </Link>
-                            <Link href="/register" className="font-bold text-pink-500 hover:text-pink-400">
-                                Sign Up
+                            <Link href="/register" className="font-bold text-primary hover:text-primary/80">
+                                Tạo tài khoản mới
                             </Link>
                         </div>
                     </form>

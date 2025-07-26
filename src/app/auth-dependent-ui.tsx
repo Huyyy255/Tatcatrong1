@@ -36,6 +36,7 @@ import {
   Sun,
   Laugh,
   CloudSun,
+  TerminalSquare,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -88,17 +89,17 @@ export default function AuthDependentUI({ children }: { children: React.ReactNod
             <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" asChild>
                 <Link href="/">
-                    <Rss className="h-6 w-6 text-primary" />
+                    <TerminalSquare className="h-6 w-6 text-primary" />
                 </Link>
                 </Button>
                 <span className="font-headline font-bold">
-                Trung tâm cá nhân
+                Origin OS 5
                 </span>
             </div>
             </SidebarHeader>
             <SidebarContent>
             <SidebarGroup>
-                <SidebarGroupLabel>Cá nhân</SidebarGroupLabel>
+                <SidebarGroupLabel>Hệ thống</SidebarGroupLabel>
                 <SidebarMenu>
                     {mainNav.map((link) => (
                     <SidebarMenuItem key={link.href}>
@@ -128,7 +129,7 @@ export default function AuthDependentUI({ children }: { children: React.ReactNod
                 </SidebarMenu>
             </SidebarGroup>
             <SidebarGroup>
-                <SidebarGroupLabel>Công cụ AI</SidebarGroupLabel>
+                <SidebarGroupLabel>Tiện ích AI</SidebarGroupLabel>
                 <SidebarMenu>
                     {toolsNav.map((link) => (
                     <SidebarMenuItem key={link.href}>

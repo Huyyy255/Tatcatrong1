@@ -48,9 +48,9 @@ import AuthDependentUI from "./auth-dependent-ui";
 
 
 export const metadata: Metadata = {
-  title: "Trung tâm cá nhân tất cả trong một",
+  title: "Origin OS 5",
   description:
-    "Một trung tâm cá nhân với portfolio, blog, và nhiều công cụ khác.",
+    "Một hệ điều hành cá nhân với portfolio, blog, và nhiều công cụ khác.",
 };
 
 export default function RootLayout({
@@ -72,7 +72,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -97,4 +97,3 @@ export default function RootLayout({
     </html>
   );
 }
-

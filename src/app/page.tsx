@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { allPosts } from "@/lib/posts";
-import { ArrowRight, CodeXml, Newspaper, Cake } from "lucide-react";
+import { ArrowRight, CodeXml, Newspaper, Cake, TerminalSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -51,12 +51,12 @@ export default function Home() {
       {isBirthdayTheme && startBirthdayExperience && <BirthdayExperience />}
       <section className="mb-16 text-center">
         <h1 className="font-headline text-5xl font-bold tracking-tight">
-         {isBirthdayTheme ? "Chúc mừng sinh nhật, Huy!" : "Trung tâm cá nhân"}
+         {isBirthdayTheme ? "Chúc mừng sinh nhật, Huy!" : "Chào mừng đến với Origin OS 5"}
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
           {isBirthdayTheme 
             ? "Đây là một ngày đặc biệt! Hôm nay là ngày của bạn. Chúc bạn một tuổi mới tràn đầy niềm vui, thành công và những dòng code đẹp."
-            : "Chào mừng đến với không gian cá nhân của tôi. Nơi đây trưng bày các dự án, chia sẻ kiến thức qua blog và cung cấp nhiều công cụ hữu ích."
+            : "Hệ điều hành cá nhân của bạn. Nơi mọi thứ được sắp xếp, sáng tạo và hoàn thành."
           }
         </p>
         <div className="mt-8 flex justify-center gap-4">
@@ -85,7 +85,7 @@ export default function Home() {
       </section>
       
       <section className="mb-16">
-        <h2 className="font-headline mb-8 text-center text-3xl font-bold">Công nghệ tôi sử dụng</h2>
+        <h2 className="font-headline mb-8 text-center text-3xl font-bold">Công nghệ cốt lõi</h2>
         <div className="mx-auto max-w-md">
             <TechList />
         </div>

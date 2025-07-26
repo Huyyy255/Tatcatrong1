@@ -139,7 +139,9 @@
 
 @layer components {
   .login-card-container {
-    @apply relative bg-transparent w-full max-w-sm;
+    @apply relative w-full max-w-sm;
+    background: rgba(255, 255, 255, 0.1);
+    @apply rounded-3xl border border-white/20 backdrop-blur-lg shadow-2xl;
   }
   .login-card-container::before {
     content: '';
@@ -149,19 +151,11 @@
     transform: translate(-50%, -50%);
     width: 102%;
     height: 105%;
-    border-radius: 1.5rem; /* 24px */
-    background: linear-gradient(0deg, theme('colors.pink.500'), theme('colors.cyan.400'));
-    animation: rotate 4s linear infinite;
-    z-index: 10;
+    border-radius: 1.875rem; /* 30px */
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.8), hsl(var(--destructive) / 0.6));
+    animation: rotate 6s linear infinite;
+    z-index: -1;
   }
-   .login-card-container::after {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    background-color: hsl(var(--card));
-    border-radius: 1.125rem; /* 18px */
-    z-index: 10;
-   }
 
   @keyframes rotate {
     0% {

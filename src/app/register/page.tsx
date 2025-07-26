@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserPlus, Heart } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import LoadingOverlay from "@/components/ui/loading-overlay";
@@ -67,23 +67,22 @@ export default function RegisterPage() {
             <LoadingOverlay show={loading} />
             <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] bg-background/95 px-4">
                 <div className="login-card-container">
-                    <form onSubmit={handleSubmit} className="relative z-20 bg-card p-8 rounded-2xl shadow-2xl space-y-6 border border-border">
-                        <div className="flex items-center justify-center space-x-3 mb-6">
-                            <UserPlus className="w-8 h-8 text-cyan-400"/>
-                            <h1 className="text-3xl font-bold text-foreground tracking-wider">REGISTER</h1>
-                             <Heart className="w-8 h-8 text-pink-500"/>
+                    <form onSubmit={handleSubmit} className="relative z-20 p-8 space-y-6">
+                        <div className="flex flex-col items-center justify-center space-y-2 mb-6 text-center">
+                            <h1 className="text-3xl font-bold font-headline text-foreground tracking-wider">Tạo tài khoản</h1>
+                            <p className="text-sm text-muted-foreground">Bắt đầu hành trình của bạn với Origin OS.</p>
                         </div>
                         
                         <div className="space-y-4">
                              <div>
-                                <Label className="text-sm font-medium text-muted-foreground" htmlFor="email">
+                                <Label className="text-xs font-medium text-muted-foreground" htmlFor="email">
                                     Email
                                 </Label>
                                 <Input 
                                     type="email" 
                                     id="email" 
                                     placeholder="Enter your email" 
-                                    className="mt-1 bg-background/50 border-border focus:ring-cyan-500 focus:border-cyan-500"
+                                    className="mt-1 bg-transparent/50 border-white/20 focus:ring-primary/50 focus:border-primary/50"
                                     required
                                     disabled={loading}
                                     value={email}
@@ -91,14 +90,14 @@ export default function RegisterPage() {
                                 />
                             </div>
                             <div>
-                                <Label className="text-sm font-medium text-muted-foreground" htmlFor="password">
-                                    Password
+                                <Label className="text-xs font-medium text-muted-foreground" htmlFor="password">
+                                    Mật khẩu
                                 </Label>
                                 <Input 
                                     type="password" 
                                     id="password" 
                                     placeholder="Enter your password" 
-                                    className="mt-1 bg-background/50 border-border focus:ring-cyan-500 focus:border-cyan-500"
+                                    className="mt-1 bg-transparent/50 border-white/20 focus:ring-primary/50 focus:border-primary/50"
                                     required
                                     disabled={loading}
                                      value={password}
@@ -106,14 +105,14 @@ export default function RegisterPage() {
                                 />
                             </div>
                              <div>
-                                <Label className="text-sm font-medium text-muted-foreground" htmlFor="confirm-password">
-                                    Confirm Password
+                                <Label className="text-xs font-medium text-muted-foreground" htmlFor="confirm-password">
+                                    Xác nhận mật khẩu
                                 </Label>
                                 <Input 
                                     type="password" 
                                     id="confirm-password" 
                                     placeholder="Confirm your password" 
-                                    className="mt-1 bg-background/50 border-border focus:ring-cyan-500 focus:border-cyan-500"
+                                    className="mt-1 bg-transparent/50 border-white/20 focus:ring-primary/50 focus:border-primary/50"
                                     required
                                     disabled={loading}
                                     value={confirmPassword}
@@ -124,16 +123,17 @@ export default function RegisterPage() {
                         
                         <Button 
                             type="submit"
-                            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg transition-all duration-300 transform hover:scale-105"
+                            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base transition-all duration-300 transform hover:scale-105"
                             disabled={loading}
                         >
-                            Sign Up
+                            <UserPlus className="mr-2 h-4 w-4" />
+                            Đăng ký
                         </Button>
                         
-                        <div className="text-center text-sm">
-                            <span className="text-muted-foreground">Already have an account? </span>
-                            <Link href="/login" className="font-bold text-pink-500 hover:text-pink-400">
-                                Sign In
+                        <div className="text-center text-xs">
+                            <span className="text-muted-foreground">Đã có tài khoản? </span>
+                            <Link href="/login" className="font-bold text-primary hover:text-primary/80">
+                                Đăng nhập
                             </Link>
                         </div>
                     </form>

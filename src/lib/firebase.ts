@@ -8,7 +8,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAiuXTX5T8Hu42agyI090rp0JcQ6JlegHY",
   authDomain: "all-in-one-personal-hub.firebaseapp.com",
   projectId: "all-in-one-personal-hub",
-  storageBucket: "all-in-one-personal-hub.firebasestorage.app",
+  storageBucket: "all-in-one-personal-hub.appspot.com",
   messagingSenderId: "486782109383",
   appId: "1:486782109383:web:751f64c35e78a29ce460e2",
   measurementId: "",
