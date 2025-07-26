@@ -157,48 +157,46 @@ function StaggeredList() {
 
 function LetterGridAnimation() {
   const animationRef = useRef<anime.AnimeInstance | null>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-
+  
   const text = "ORIGINOS";
   const rows = 4;
   const cols = 8;
   const totalCells = rows * cols;
   const cells = Array.from({ length: totalCells });
 
+  useEffect(() => {
+    // Create the animation timeline once the component is mounted
+    animationRef.current = anime.timeline({
+        targets: '.letter-grid .letter',
+        delay: anime.stagger(100, {grid: [cols, rows], from: 'center'}),
+        loop: false,
+        autoplay: true, // Start automatically on mount
+    })
+    .add({
+        scale: [
+            {value: .1, easing: 'easeOutSine', duration: 500},
+            {value: 1, easing: 'easeInOutQuad', duration: 1200}
+        ],
+    })
+    .add({
+        color: 'hsl(var(--primary-foreground))',
+        backgroundColor: 'hsl(var(--primary))',
+        duration: 1000,
+    }, '-=1200');
+
+    // Pause the animation when the component unmounts
+    return () => animationRef.current?.pause();
+  }, []); // Empty dependency array ensures this runs only once on mount
+
   const runAnimation = () => {
     if (animationRef.current) {
       animationRef.current.restart();
-    } else if (gridRef.current) {
-      animationRef.current = anime.timeline({
-          targets: '.letter-grid .letter',
-          delay: anime.stagger(100, {grid: [cols, rows], from: 'center'}),
-          loop: false,
-      })
-      .add({
-          scale: [
-              {value: .1, easing: 'easeOutSine', duration: 500},
-              {value: 1, easing: 'easeInOutQuad', duration: 1200}
-          ],
-      })
-      .add({
-          color: 'hsl(var(--primary-foreground))',
-          backgroundColor: 'hsl(var(--primary))',
-          duration: 1000,
-      }, '-=1200');
     }
   }
-
-  useEffect(() => {
-    if (gridRef.current) {
-        runAnimation();
-    }
-    return () => animationRef.current?.pause();
-  }, [gridRef]);
 
   return (
     <div className='flex flex-col items-center gap-4'>
         <div 
-            ref={gridRef}
             className="letter-grid grid w-full max-w-sm"
             style={{
                 gridTemplateColumns: `repeat(${cols}, 1fr)`
