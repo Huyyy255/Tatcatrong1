@@ -158,7 +158,7 @@
     content: '';
     position: absolute;
     inset: 4px;
-    background-color: #1f2937; /* gray-800 */
+    background-color: hsl(var(--card));
     border-radius: 1.125rem; /* 18px */
     z-index: 10;
    }
