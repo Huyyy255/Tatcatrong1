@@ -11,12 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { allPosts } from "@/lib/posts";
-import { ArrowRight, CodeXml, Newspaper, Gift, Cake } from "lucide-react";
+import { ArrowRight, CodeXml, Newspaper, Cake } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import BirthdayExperience from "./birthday-experience";
+import TechList from "@/components/tech-list";
 
 
 const featuredProjects = [
@@ -80,6 +81,13 @@ export default function Home() {
               </Button>
             </>
           )}
+        </div>
+      </section>
+      
+      <section className="mb-16">
+        <h2 className="font-headline mb-8 text-center text-3xl font-bold">Công nghệ tôi sử dụng</h2>
+        <div className="mx-auto max-w-md">
+            <TechList />
         </div>
       </section>
 
