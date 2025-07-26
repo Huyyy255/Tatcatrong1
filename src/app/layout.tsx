@@ -169,12 +169,14 @@ export default function RootLayout({
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
-                <ThemeToggle />
               </SidebarFooter>
             </Sidebar>
             <SidebarInset>
-              <header className="flex h-16 items-center justify-end border-b px-6 md:justify-end">
+              <header className="flex h-16 items-center justify-between border-b px-6">
                 <SidebarTrigger className="md:hidden" />
+                <div className="flex items-center gap-2">
+                  <ThemeToggle />
+                </div>
               </header>
               <main>{children}</main>
             </SidebarInset>
