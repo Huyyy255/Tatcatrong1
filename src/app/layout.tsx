@@ -20,6 +20,7 @@ import {
   Animation,
   AudioLines,
   BotMessageSquare,
+  ClipboardCopy,
   Code2,
   CodeXml,
   FileText,
@@ -54,6 +55,7 @@ const mainNav = [
 const utilitiesNav = [
   { href: "/tasks",label: "Công việc", icon: ListTodo },
   { href: "/notes", label: "Ghi chú", icon: FileText },
+  { href: "/snippets", label: "Snippets", icon: ClipboardCopy },
   { href: "/code-translator", label: "Dịch mã đa năng", icon: Code2 },
   { href: "/animations", label: "Hoạt ảnh", icon: Palette},
   { href: "/faq", label: "Hỏi đáp", icon: HelpCircle },
