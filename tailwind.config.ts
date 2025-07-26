@@ -18,7 +18,7 @@ export default {
     extend: {
       fontFamily: {
         body: ["Inter", "sans-serif"],
-        headline: ["'JetBrains Mono'", "monospace"],
+        headline: ["'Space Grotesk'", "monospace"],
         code: ["monospace"],
       },
       colors: {
@@ -72,9 +72,9 @@ export default {
         }
       },
       borderRadius: {
-        lg: "calc(var(--radius) + 4px)",
-        md: "var(--radius)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 4px)",
+        sm: "calc(var(--radius) - 8px)",
       },
       keyframes: {
         "accordion-down": {
