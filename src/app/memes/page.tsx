@@ -39,7 +39,7 @@ function MemeCreator() {
             backgroundColor: null,
          }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `${selectedTemplate.name.toLowerCase().replace(/ /g, '-')}-meme.png`;
+            link.download = \`\${selectedTemplate.name.toLowerCase().replace(/ /g, '-')}-meme.png\`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
@@ -224,7 +224,7 @@ function AiImageCreator() {
                         className="absolute bottom-4 right-4 bg-background/50"
                         asChild
                     >
-                        <a href={result.imageDataUri} download={`${prompt}.png`}>
+                        <a href={result.imageDataUri} download={\`\${prompt}.png\`}>
                         <Download />
                         </a>
                     </Button>

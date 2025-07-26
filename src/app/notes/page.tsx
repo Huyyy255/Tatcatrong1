@@ -201,7 +201,7 @@ export default function NotesPage() {
     setNoteToListen(note);
     setIsAudioModalOpen(true);
     try {
-      const result = await textToSpeech({ text: `${note.title}. ${note.content}` });
+      const result = await textToSpeech({ text: \`\${note.title}. \${note.content}\` });
       setAudio(result);
     } catch (error) {
       console.error("Failed to generate audio:", error);
