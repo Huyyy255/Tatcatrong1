@@ -27,6 +27,7 @@ import {
   HelpCircle,
   Home,
   ListTodo,
+  LogIn,
   Mail,
   Newspaper,
   Rss,
@@ -158,6 +159,16 @@ export default function RootLayout({
                 </SidebarGroup>
               </SidebarContent>
               <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild tooltip={{children: 'Đăng nhập'}}>
+                            <Link href="/login">
+                                <LogIn />
+                                <span>Đăng nhập</span>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
                 <ThemeToggle />
               </SidebarFooter>
             </Sidebar>
