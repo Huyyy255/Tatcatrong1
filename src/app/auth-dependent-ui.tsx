@@ -34,6 +34,7 @@ import {
   User,
   Sparkles,
   Sun,
+  Laugh,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,7 @@ const toolsNav = [
 
 const lifestyleNav = [
     { href: "/animations", label: "Hoạt ảnh", icon: Palette},
+    { href: "/memes", label: "Trình tạo Meme", icon: Laugh },
 ]
 
 export default function AuthDependentUI({ children }: { children: React.ReactNode }) {
