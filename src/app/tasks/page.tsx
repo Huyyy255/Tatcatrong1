@@ -9,12 +9,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Plus, Edit, Save } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useAutoAnimate } from "@/hooks/use-auto-animate";
-import { useAuth } from "@/hooks/use-auth";
 import { db } from "@/lib/firebase";
 import {
   collection,
   query,
-  where,
   onSnapshot,
   addDoc,
   updateDoc,
@@ -31,8 +29,9 @@ interface Task {
   completed: boolean;
   dueDate: string | null;
   createdAt: Timestamp;
-  userId: string;
 }
+
+const FAKE_USER_ID = "local-user";
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -41,22 +40,14 @@ export default function TasksPage() {
   const [editingTaskText, setEditingTaskText] = useState("");
   const [loading, setLoading] = useState(true);
   
-  const { user } = useAuth();
   const [uncompletedListRef] = useAutoAnimate<HTMLDivElement>();
   const [completedListRef] = useAutoAnimate<HTMLDivElement>();
 
   useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      setTasks([]);
-      return;
-    }
-
     setLoading(true);
     const tasksCollection = collection(db, "tasks");
     const q = query(
         tasksCollection, 
-        where("userId", "==", user.uid),
         orderBy("createdAt", "desc")
     );
 
@@ -73,18 +64,18 @@ export default function TasksPage() {
     });
 
     return () => unsubscribe();
-  }, [user]);
+  }, []);
 
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newTaskText.trim() === "" || !user) return;
+    if (newTaskText.trim() === "") return;
     
     await addDoc(collection(db, "tasks"), {
       text: newTaskText,
       completed: false,
       dueDate: null,
       createdAt: Timestamp.now(),
-      userId: user.uid,
+      userId: FAKE_USER_ID,
     });
     setNewTaskText("");
   };
@@ -124,19 +115,6 @@ export default function TasksPage() {
   
   const uncompletedTasks = tasks.filter(task => !task.completed);
   const completedTasks = tasks.filter(task => task.completed);
-
-  if (!user) {
-      return (
-         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 text-center">
-             <h1 className="font-headline text-4xl font-bold tracking-tight">
-                Quản lý Công việc
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-                Vui lòng đăng nhập để xem và quản lý công việc của bạn.
-            </p>
-         </div>
-      )
-  }
 
   return (
     <>

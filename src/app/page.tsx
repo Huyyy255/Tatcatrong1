@@ -18,6 +18,7 @@ import { useTheme } from "next-themes";
 import { useState } from "react";
 import BirthdayExperience from "./birthday-experience";
 import TechList from "@/components/tech-list";
+import AnimatedBackground from "@/components/animated-background";
 
 
 const featuredProjects = [
@@ -47,7 +48,9 @@ export default function Home() {
   const isBirthdayTheme = theme === "birthday";
 
   return (
-    <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+    <div className="relative">
+      <AnimatedBackground />
+      <div className="container relative z-10 mx-auto px-4 py-12 sm:px-6 lg:px-8">
       {isBirthdayTheme && startBirthdayExperience && <BirthdayExperience />}
       <section className="mb-16 text-center">
         <h1 className="font-headline text-5xl font-bold tracking-tight">
@@ -151,6 +154,7 @@ export default function Home() {
            ))}
         </div>
       </section>
+    </div>
     </div>
   );
 }

@@ -26,12 +26,10 @@ import { Trash2, Edit, Plus, Search, X, Clipboard, Check, Star } from "lucide-re
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/use-auth";
 import { db } from "@/lib/firebase";
 import {
   collection,
   query,
-  where,
   onSnapshot,
   addDoc,
   updateDoc,
@@ -67,6 +65,7 @@ const initialFormData: SnippetFormData = {
   tags: "",
 };
 
+const FAKE_USER_ID = "local-user";
 
 export default function SnippetsPage() {
   const [snippets, setSnippets] = useState<Snippet[]>([]);
@@ -76,21 +75,13 @@ export default function SnippetsPage() {
   const [formData, setFormData] = useState<SnippetFormData>(initialFormData);
   const [copiedStates, setCopiedStates] = useState<{[key: string]: boolean}>({});
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!user) {
-      setSnippets([]);
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     const snippetsCollection = collection(db, "snippets");
     const q = query(
         snippetsCollection, 
-        where("userId", "==", user.uid),
         orderBy("createdAt", "desc")
     );
 
@@ -107,11 +98,11 @@ export default function SnippetsPage() {
     });
 
     return () => unsubscribe();
-  }, [user]);
+  }, []);
 
   const handleFormSubmit = async () => {
     const { title, code, tags, description } = formData;
-    if (title.trim() === "" || code.trim() === "" || !user) return;
+    if (title.trim() === "" || code.trim() === "") return;
 
     const tagsArray = tags.split(",").map((tag) => tag.trim()).filter(Boolean);
 
@@ -126,7 +117,7 @@ export default function SnippetsPage() {
         tags: tagsArray,
         createdAt: Timestamp.now(),
         isFavorite: false,
-        userId: user.uid
+        userId: FAKE_USER_ID
       });
     }
     
@@ -185,19 +176,6 @@ export default function SnippetsPage() {
         )
     );
   }, [snippets, searchTerm]);
-
-   if (!user) {
-      return (
-         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 text-center">
-             <h1 className="font-headline text-4xl font-bold tracking-tight">
-                Quản lý Snippet
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-                Vui lòng đăng nhập để xem và quản lý snippet của bạn.
-            </p>
-         </div>
-      )
-  }
 
   return (
     <>

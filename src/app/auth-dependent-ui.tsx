@@ -24,8 +24,6 @@ import {
   HelpCircle,
   Home,
   ListTodo,
-  LogIn,
-  LogOut,
   Mail,
   Newspaper,
   Rss,
@@ -33,7 +31,6 @@ import {
   Star,
   User,
   Sparkles,
-  Sun,
   Laugh,
   CloudSun,
   TerminalSquare,
@@ -41,14 +38,6 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useAuth } from "@/hooks/use-auth";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator
-} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 
@@ -80,7 +69,6 @@ const lifestyleNav = [
 ]
 
 export default function AuthDependentUI({ children }: { children: React.ReactNode }) {
-    const { user, signOut } = useAuth();
 
     return (
         <>
@@ -161,35 +149,16 @@ export default function AuthDependentUI({ children }: { children: React.ReactNod
             </SidebarContent>
             <SidebarFooter>
             <SidebarMenu>
-                {user ? (
-                    <SidebarMenuItem>
-                         <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton asChild={false} className="w-full justify-start">
-                                    <Avatar className="h-6 w-6">
-                                        <AvatarFallback>{user.email?.[0].toUpperCase()}</AvatarFallback>
-                                    </Avatar>
-                                    <span className="truncate">{user.email}</span>
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56 mb-2" side="top" align="start">
-                                <DropdownMenuItem onClick={signOut}>
-                                    <LogOut className="mr-2 h-4 w-4" />
-                                    <span>Đăng xuất</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                ) : (
-                    <SidebarMenuItem>
-                        <SidebarMenuButton asChild tooltip={{children: 'Đăng nhập'}}>
-                            <Link href="/login">
-                                <LogIn />
-                                <span>Đăng nhập</span>
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                )}
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild tooltip={{children: 'Hồ sơ'}}>
+                        <Link href="#">
+                            <Avatar className="h-6 w-6">
+                                <AvatarFallback><User /></AvatarFallback>
+                            </Avatar>
+                            <span>Hồ sơ</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
             </SidebarMenu>
             </SidebarFooter>
         </Sidebar>

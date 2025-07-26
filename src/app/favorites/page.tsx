@@ -16,7 +16,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { useAuth } from "@/hooks/use-auth";
 import { db } from "@/lib/firebase";
 import {
   collection,
@@ -53,50 +52,40 @@ export default function FavoritesPage() {
   const [favoriteNotes, setFavoriteNotes] = useState<Note[]>([]);
   const [favoriteSnippets, setFavoriteSnippets] = useState<Snippet[]>([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!user) {
-      setFavoriteNotes([]);
-      setFavoriteSnippets([]);
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
 
     // Listener for favorite notes
     const notesQuery = query(
       collection(db, "notes"),
-      where("userId", "==", user.uid),
       where("isFavorite", "==", true),
       orderBy("createdAt", "desc")
     );
     const unsubscribeNotes = onSnapshot(notesQuery, (snapshot) => {
       const notes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Note[];
       setFavoriteNotes(notes);
-      setLoading(false);
+      if (loading) setLoading(false);
     });
 
     // Listener for favorite snippets
     const snippetsQuery = query(
       collection(db, "snippets"),
-      where("userId", "==", user.uid),
       where("isFavorite", "==", true),
       orderBy("createdAt", "desc")
     );
     const unsubscribeSnippets = onSnapshot(snippetsQuery, (snapshot) => {
       const snippets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Snippet[];
       setFavoriteSnippets(snippets);
-      setLoading(false);
+      if (loading) setLoading(false);
     });
 
     return () => {
       unsubscribeNotes();
       unsubscribeSnippets();
     };
-  }, [user]);
+  }, [loading]);
 
   const unloveNote = async (id: string) => {
     const noteDoc = doc(db, "notes", id);
@@ -114,19 +103,6 @@ export default function FavoritesPage() {
     navigator.clipboard.writeText(code);
     toast({ title: "Đã sao chép!", description: "Đoạn mã đã được sao chép vào bộ nhớ tạm." });
   };
-  
-  if (!user) {
-      return (
-         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 text-center">
-             <h1 className="font-headline text-4xl font-bold tracking-tight">
-                Danh sách Yêu thích
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-                Vui lòng đăng nhập để xem các mục yêu thích của bạn.
-            </p>
-         </div>
-      )
-  }
 
   return (
     <>

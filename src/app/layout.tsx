@@ -5,45 +5,9 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import {
-  Sidebar,
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-  SidebarHeader,
-  SidebarContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
+  SidebarProvider
 } from "@/components/ui/sidebar";
-import {
-  Animation,
-  AudioLines,
-  BotMessageSquare,
-  ClipboardCopy,
-  Code2,
-  CodeXml,
-  FileText,
-  HelpCircle,
-  Home,
-  ListTodo,
-  LogIn,
-  LogOut,
-  Mail,
-  Newspaper,
-  Rss,
-  Wrench,
-  Palette,
-  Star,
-  User,
-} from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Confetti } from "@/components/confetti";
-import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import AuthDependentUI from "./auth-dependent-ui";
 
 
@@ -79,13 +43,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
             <SidebarProvider>
               <AuthDependentUI>
                  {children}
               </AuthDependentUI>
             </SidebarProvider>
-          </AuthProvider>
           <Toaster />
           <Confetti />
         </ThemeProvider>

@@ -38,12 +38,10 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/use-auth";
 import { db } from "@/lib/firebase";
 import {
   collection,
   query,
-  where,
   onSnapshot,
   addDoc,
   updateDoc,
@@ -77,12 +75,12 @@ const initialFormData: NoteFormData = {
   tags: "",
 };
 
+const FAKE_USER_ID = "local-user";
 
 export default function NotesPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
@@ -100,17 +98,10 @@ export default function NotesPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!user) {
-      setNotes([]);
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     const notesCollection = collection(db, "notes");
     const q = query(
       notesCollection, 
-      where("userId", "==", user.uid),
       orderBy("createdAt", "desc")
     );
 
@@ -127,11 +118,11 @@ export default function NotesPage() {
     });
 
     return () => unsubscribe();
-  }, [user]);
+  }, []);
 
   const handleFormSubmit = async () => {
     const { title, content, tags } = formData;
-    if (title.trim() === "" || content.trim() === "" || !user) return;
+    if (title.trim() === "" || content.trim() === "") return;
 
     const tagsArray = tags.split(",").map((tag) => tag.trim()).filter(Boolean);
 
@@ -145,7 +136,7 @@ export default function NotesPage() {
         tags: tagsArray,
         createdAt: Timestamp.now(),
         isFavorite: false,
-        userId: user.uid,
+        userId: FAKE_USER_ID,
       });
     }
     
@@ -201,7 +192,7 @@ export default function NotesPage() {
     setNoteToListen(note);
     setIsAudioModalOpen(true);
     try {
-      const result = await textToSpeech({ text: \`\${note.title}. \${note.content}\` });
+      const result = await textToSpeech({ text: `${note.title}. ${note.content}` });
       setAudio(result);
     } catch (error) {
       console.error("Failed to generate audio:", error);
@@ -237,19 +228,6 @@ export default function NotesPage() {
         )
     );
   }, [notes, searchTerm]);
-  
-  if (!user) {
-      return (
-         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 text-center">
-             <h1 className="font-headline text-4xl font-bold tracking-tight">
-                Ghi chú cá nhân
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-                Vui lòng đăng nhập để xem và quản lý ghi chú của bạn.
-            </p>
-         </div>
-      )
-  }
 
   return (
     <>
