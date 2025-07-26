@@ -21,7 +21,7 @@ const formatLabels: Record<Format, string> = {
 
 const defaultInputText = 'Xin chào!';
 
-function CodeTranslator() {
+function UniversalDecoder() {
   const [input, setInput] = useState<string>(defaultInputText);
   const [format, setFormat] = useState<Format>('binary');
   const [mode, setMode] = useState<Mode>('encode');
@@ -141,13 +141,13 @@ export default function CodeTranslatorPage() {
         <div className="container mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
             <div className="mb-8 text-center">
                 <h1 className="font-headline text-4xl font-bold tracking-tight">
-                    Dịch mã đa năng
+                    Bộ chuyển đổi & Giải mã
                 </h1>
                 <p className="mt-4 text-lg text-muted-foreground">
                     Chuyển đổi văn bản sang các định dạng mã hóa phổ biến và ngược lại.
                 </p>
             </div>
-            <CodeTranslator />
+            <UniversalDecoder />
         </div>
     );
 }
