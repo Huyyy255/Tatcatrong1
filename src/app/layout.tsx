@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -33,6 +34,7 @@ import {
   Rss,
   Wrench,
   Palette,
+  Star,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -57,6 +59,7 @@ const utilitiesNav = [
   { href: "/tasks",label: "Công việc", icon: ListTodo },
   { href: "/notes", label: "Ghi chú", icon: FileText },
   { href: "/snippets", label: "Snippets", icon: ClipboardCopy },
+  { href: "/favorites", label: "Yêu thích", icon: Star },
   { href: "/code-translator", label: "Dịch mã đa năng", icon: Code2 },
   { href: "/animations", label: "Hoạt ảnh", icon: Palette},
   { href: "/faq", label: "Hỏi đáp", icon: HelpCircle },

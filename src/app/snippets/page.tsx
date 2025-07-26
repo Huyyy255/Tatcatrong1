@@ -22,9 +22,10 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Trash2, Edit, Plus, Search, X, Clipboard, Check } from "lucide-react";
+import { Trash2, Edit, Plus, Search, X, Clipboard, Check, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface Snippet {
   id: number;
@@ -33,6 +34,7 @@ interface Snippet {
   code: string;
   tags: string[];
   createdAt: string;
+  isFavorite: boolean;
 }
 
 type SnippetFormData = {
@@ -56,7 +58,7 @@ export default function SnippetsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSnippet, setEditingSnippet] = useState<Snippet | null>(null);
   const [formData, setFormData] = useState<SnippetFormData>(initialFormData);
-  const [copied, setCopied] = useState(false);
+  const [copiedStates, setCopiedStates] = useState<{[key: number]: boolean}>({});
 
   const { toast } = useToast();
 
@@ -91,6 +93,7 @@ function useDebounce(value, delay) {
 }`,
             tags: ["react", "hook", "typescript"],
             createdAt: new Date().toISOString(),
+            isFavorite: false,
           },
          ]);
       }
@@ -122,6 +125,7 @@ function useDebounce(value, delay) {
         code,
         tags: tagsArray,
         createdAt: new Date().toISOString(),
+        isFavorite: false,
       };
       setSnippets([newSnippet, ...snippets]);
     }
@@ -152,11 +156,19 @@ function useDebounce(value, delay) {
     setSnippets(snippets.filter((snippet) => snippet.id !== id));
   };
   
-  const handleCopyCode = (code: string) => {
+  const handleCopyCode = (id: number, code: string) => {
     navigator.clipboard.writeText(code);
-    setCopied(true);
+    setCopiedStates(prev => ({ ...prev, [id]: true }));
     toast({ title: "Đã sao chép!", description: "Đoạn mã đã được sao chép vào bộ nhớ tạm." });
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopiedStates(prev => ({ ...prev, [id]: false })), 2000);
+  };
+
+  const handleToggleFavorite = (id: number) => {
+    setSnippets(
+      snippets.map((snippet) =>
+        snippet.id === id ? { ...snippet, isFavorite: !snippet.isFavorite } : snippet
+      )
+    );
   };
   
   const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -269,12 +281,25 @@ function useDebounce(value, delay) {
             className="flex flex-col overflow-hidden"
           >
             <CardHeader>
-              <CardTitle className="font-headline text-lg leading-snug">
-                {snippet.title}
-              </CardTitle>
-              <CardDescription>
-                {snippet.description}
-              </CardDescription>
+              <div className="flex justify-between items-start">
+                  <div className="flex-grow">
+                     <CardTitle className="font-headline text-lg leading-snug">
+                        {snippet.title}
+                     </CardTitle>
+                     <CardDescription>
+                        {snippet.description}
+                     </CardDescription>
+                  </div>
+                  <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 flex-shrink-0"
+                        onClick={() => handleToggleFavorite(snippet.id)}
+                        title="Đánh dấu yêu thích"
+                    >
+                        <Star className={cn("h-5 w-5", snippet.isFavorite && "fill-yellow-400 text-yellow-400")}/>
+                   </Button>
+              </div>
               <div className="mt-2 flex flex-wrap gap-2">
                 {snippet.tags.map((tag) => (
                   <Badge key={tag} variant="secondary">
@@ -294,9 +319,9 @@ function useDebounce(value, delay) {
                     size="icon" 
                     variant="ghost" 
                     className="absolute top-2 right-2 h-8 w-8"
-                    onClick={() => handleCopyCode(snippet.code)}
+                    onClick={() => handleCopyCode(snippet.id, snippet.code)}
                  >
-                    {copied ? <Check className="h-4 w-4 text-green-500"/> : <Clipboard className="h-4 w-4"/>}
+                    {copiedStates[snippet.id] ? <Check className="h-4 w-4 text-green-500"/> : <Clipboard className="h-4 w-4"/>}
                 </Button>
               </div>
             </CardContent>
