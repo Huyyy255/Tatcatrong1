@@ -5,7 +5,7 @@ import { getFirestore, Firestore } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAiuXTX5T8Hu42agyI090rp0JcQ6JlegHY",
+  apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY,
   authDomain: "all-in-one-personal-hub.firebaseapp.com",
   projectId: "all-in-one-personal-hub",
   storageBucket: "all-in-one-personal-hub.appspot.com",
