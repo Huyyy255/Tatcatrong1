@@ -42,7 +42,7 @@ const featuredProjects = [
 export default function Home() {
   const { theme } = useTheme();
   const [startBirthdayExperience, setStartBirthdayExperience] = useState(false);
-  const recentPosts = allPosts.slice(0, 2);
+  const recentPosts = allPosts.slice(0, 2)
 
   const isBirthdayTheme = theme === "birthday";
 
