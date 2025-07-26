@@ -39,7 +39,7 @@ button {
   padding: 10px 15px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color: 0.3s;
 }
 button:hover {
   background-color: #0056b3;
