@@ -47,33 +47,49 @@ interface Note {
   createdAt: string;
 }
 
+// Separate state for the form/dialog to avoid mixing with main notes data
+type NoteFormData = {
+  title: string;
+  content: string;
+  tags: string; // Tags are handled as a single comma-separated string in the form
+};
+
+const initialFormData: NoteFormData = {
+  title: "",
+  content: "",
+  tags: "",
+};
+
+
 export default function NotesPage() {
   const [notes, setNotes] = useState<Note[]>([]);
-  const [newNote, setNewNote] = useState<{
-    title: string;
-    content: string;
-    tags: string;
-  }>({ title: "", content: "", tags: "" });
-  const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  
+  // State for Add/Edit dialog
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
+  const [formData, setFormData] = useState<NoteFormData>(initialFormData);
+
+  // State for Summary dialog
+  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
   const [summary, setSummary] = useState<SummarizeNoteOutput | null>(null);
-  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   
+  // State for Audio dialog
+  const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [audio, setAudio] = useState<TextToSpeechOutput | null>(null);
-  const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
   const [noteToListen, setNoteToListen] = useState<Note | null>(null);
 
   const { toast } = useToast();
 
   useEffect(() => {
-    const savedNotes = localStorage.getItem("notes");
-    if (savedNotes) {
-      setNotes(JSON.parse(savedNotes));
-    } else {
-      setNotes([
+    try {
+      const savedNotes = localStorage.getItem("notes");
+      if (savedNotes) {
+        setNotes(JSON.parse(savedNotes));
+      } else {
+         setNotes([
         {
           id: 1,
           title: "Ý tưởng cho dự án mới",
@@ -91,6 +107,10 @@ export default function NotesPage() {
           createdAt: new Date().toISOString(),
         },
       ]);
+      }
+    } catch (error) {
+       console.error("Failed to parse notes from localStorage", error);
+       setNotes([]);
     }
   }, []);
 
@@ -98,30 +118,50 @@ export default function NotesPage() {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
-  const handleAddNote = () => {
-    if (newNote.title.trim() === "" || newNote.content.trim() === "") return;
-    const newId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) + 1 : 1;
-    const newNoteToAdd: Note = {
-      id: newId,
-      title: newNote.title,
-      content: newNote.content,
-      tags: newNote.tags.split(",").map((tag) => tag.trim()).filter(Boolean),
-      createdAt: new Date().toISOString(),
-    };
-    setNotes([newNoteToAdd, ...notes]);
-    setNewNote({ title: "", content: "", tags: "" });
-    setIsModalOpen(false);
-  };
+  const handleFormSubmit = () => {
+    const { title, content, tags } = formData;
+    if (title.trim() === "" || content.trim() === "") return;
 
-  const handleUpdateNote = () => {
-    if (!editingNote) return;
-    setNotes(
-      notes.map((note) => (note.id === editingNote.id ? editingNote : note))
-    );
+    const tagsArray = tags.split(",").map((tag) => tag.trim()).filter(Boolean);
+
+    if (editingNote) {
+      // Update existing note
+      const updatedNote: Note = { ...editingNote, title, content, tags: tagsArray };
+      setNotes(notes.map((note) => (note.id === editingNote.id ? updatedNote : note)));
+    } else {
+      // Add new note
+      const newId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) + 1 : 1;
+      const newNoteToAdd: Note = {
+        id: newId,
+        title,
+        content,
+        tags: tagsArray,
+        createdAt: new Date().toISOString(),
+      };
+      setNotes([newNoteToAdd, ...notes]);
+    }
+    
+    setIsModalOpen(false);
     setEditingNote(null);
-    setIsModalOpen(false);
+    setFormData(initialFormData);
+  };
+  
+  const openAddModal = () => {
+    setEditingNote(null);
+    setFormData(initialFormData);
+    setIsModalOpen(true);
   };
 
+  const openEditModal = (note: Note) => {
+    setEditingNote(note);
+    setFormData({
+      title: note.title,
+      content: note.content,
+      tags: note.tags.join(", "),
+    });
+    setIsModalOpen(true);
+  };
+  
   const handleDeleteNote = (id: number) => {
     setNotes(notes.filter((note) => note.id !== id));
   };
@@ -167,19 +207,13 @@ export default function NotesPage() {
     }
   }
 
-
-  const openEditModal = (note: Note) => {
-    setEditingNote({ ...note, tags: note.tags.join(", ") });
-    setIsModalOpen(true);
-  };
-
-  const openAddModal = () => {
-    setEditingNote(null);
-    setNewNote({ title: "", content: "", tags: "" });
-    setIsModalOpen(true);
+  const handleFormInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const filteredNotes = useMemo(() => {
+    if (!searchTerm) return notes;
     return notes.filter(
       (note) =>
         note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -215,44 +249,30 @@ export default function NotesPage() {
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <Input
+                name="title"
                 placeholder="Tiêu đề"
-                value={editingNote ? editingNote.title : newNote.title}
-                onChange={(e) =>
-                  editingNote
-                    ? setEditingNote({ ...editingNote, title: e.target.value })
-                    : setNewNote({ ...newNote, title: e.target.value })
-                }
+                value={formData.title}
+                onChange={handleFormInputChange}
               />
               <Textarea
+                name="content"
                 placeholder="Nội dung"
                 rows={5}
-                value={editingNote ? editingNote.content : newNote.content}
-                onChange={(e) =>
-                  editingNote
-                    ? setEditingNote({ ...editingNote, content: e.target.value })
-                    : setNewNote({ ...newNote, content: e.target.value })
-                }
+                value={formData.content}
+                onChange={handleFormInputChange}
               />
               <Input
+                name="tags"
                 placeholder="Thẻ (phân cách bởi dấu phẩy)"
-                value={
-                  editingNote ? (editingNote.tags as unknown as string) : newNote.tags
-                }
-                onChange={(e) =>
-                  editingNote
-                    ? setEditingNote({
-                        ...editingNote,
-                        tags: e.target.value.split(",").map(t => t.trim()),
-                      })
-                    : setNewNote({ ...newNote, tags: e.target.value })
-                }
+                value={formData.tags}
+                onChange={handleFormInputChange}
               />
             </div>
             <DialogFooter>
               <DialogClose asChild>
                 <Button variant="outline">Hủy</Button>
               </DialogClose>
-              <Button onClick={editingNote ? handleUpdateNote : handleAddNote}>
+              <Button onClick={handleFormSubmit}>
                 {editingNote ? "Lưu thay đổi" : "Lưu ghi chú"}
               </Button>
             </DialogFooter>
@@ -406,3 +426,5 @@ export default function NotesPage() {
     </div>
   );
 }
+
+    
