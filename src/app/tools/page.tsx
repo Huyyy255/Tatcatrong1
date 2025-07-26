@@ -5,13 +5,14 @@ import {
   CardTitle,
   CardDescription
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, CloudSun, Code, ImageIcon, Timer } from "lucide-react";
+import { BrainCircuit, Clock, CloudSun, Code, FileCode, ImageIcon, Timer } from "lucide-react";
 import WeatherWidget from "./weather-widget";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";
 import ImageGenerator from "./image-generator";
 import CodeFixer from "./code-fixer";
+import LiveCodePreview from "./live-code-preview";
 
 export default function ToolsPage() {
   return (
@@ -30,14 +31,29 @@ export default function ToolsPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
                 <Code className="h-6 w-6 text-primary" />
-                <CardTitle>Trình sửa lỗi và giải thích mã</CardTitle>
+                <CardTitle>Trình sửa lỗi và Dịch mã</CardTitle>
             </div>
             <CardDescription>
-                Dán đoạn mã của bạn vào đây, AI sẽ tìm lỗi, sửa chúng và giải thích cho bạn.
+                Dán đoạn mã của bạn vào đây, AI sẽ tìm lỗi, sửa chúng, giải thích và thậm chí dịch sang ngôn ngữ khác.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <CodeFixer />
+          </CardContent>
+        </Card>
+
+        <Card className="lg:col-span-3">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+                <FileCode className="h-6 w-6 text-primary" />
+                <CardTitle>Xem trước Code trực tiếp</CardTitle>
+            </div>
+            <CardDescription>
+                Thử nghiệm nhanh các đoạn mã HTML, CSS và JavaScript và xem kết quả ngay lập tức.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LiveCodePreview />
           </CardContent>
         </Card>
         
