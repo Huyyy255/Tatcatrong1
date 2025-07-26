@@ -64,25 +64,6 @@ export default function AnimatedBackground() {
           />
         ))}
       </div>
-      <style jsx global>{`
-        @keyframes move {
-          0% {
-            transform: translate(0, 0) scale(1);
-          }
-          25% {
-            transform: translate(${Math.random() * 40 - 20}vw, ${Math.random() * 40 - 20}vh) scale(${0.8 + Math.random() * 0.4});
-          }
-          50% {
-            transform: translate(${Math.random() * 40 - 20}vw, ${Math.random() * 40 - 20}vh) scale(${1 + Math.random() * 0.2});
-          }
-          75% {
-            transform: translate(${Math.random() * 40 - 20}vw, ${Math.random() * 40 - 20}vh) scale(${0.8 + Math.random() * 0.4});
-          }
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-        }
-      `}</style>
     </div>
   );
 }
