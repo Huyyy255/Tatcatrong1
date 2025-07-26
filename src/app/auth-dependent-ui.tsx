@@ -73,7 +73,7 @@ const toolsNav = [
 
 const lifestyleNav = [
     { href: "/animations", label: "Hoạt ảnh", icon: Palette},
-    { href: "/memes", label: "Trình tạo Meme", icon: Laugh },
+    { href: "/memes", label: "Tạo ảnh & Meme", icon: Laugh },
 ]
 
 export default function AuthDependentUI({ children }: { children: React.ReactNode }) {

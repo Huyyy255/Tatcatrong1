@@ -11,7 +11,6 @@ import WeatherWidget from "./weather-widget";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";
-import ImageGenerator from "./image-generator";
 import CodeFixer from "./code-fixer";
 import LiveCodePreview from "./live-code-preview";
 import CodeComparator from "./code-comparator";
@@ -75,68 +74,48 @@ export default function ToolsPage() {
           </CardContent>
         </Card>
         
-        <Card className="lg:col-span-2">
-           <CardHeader>
-            <div className="flex items-center gap-2">
-              <ImageIcon className="h-6 w-6 text-primary" />
-              <CardTitle>Tạo ảnh bằng AI</CardTitle>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:col-span-3">
+            <Card className="md:col-span-2">
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                    <CloudSun className="h-6 w-6 text-primary" />
+                    <CardTitle>Thời tiết</CardTitle>
+                    </div>
+                    <CardDescription>
+                    Xem thông tin thời tiết hiện tại của các tỉnh thành Việt Nam.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <WeatherWidget />
+                </CardContent>
+            </Card>
+            <div className="grid grid-cols-2 gap-8">
+                <Card>
+                    <CardHeader>
+                        <div className="flex items-center gap-2">
+                        <Clock className="h-6 w-6 text-primary" />
+                        <CardTitle>Đồng hồ</CardTitle>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="flex justify-center pt-4">
+                        <ClockWidget />
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <div className="flex items-center gap-2">
+                        <Timer className="h-6 w-6 text-primary" />
+                        <CardTitle>Đếm ngược</CardTitle>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="flex justify-center pt-4">
+                        <CountdownWidget />
+                    </CardContent>
+                </Card>
             </div>
-            <CardDescription>
-              Biến ý tưởng của bạn thành hình ảnh. Nhập một mô tả văn bản và để AI tạo ra một hình ảnh độc đáo cho bạn.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ImageGenerator />
-          </CardContent>
-        </Card>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card>
-                <CardHeader>
-                    <div className="flex items-center gap-2">
-                    <Clock className="h-6 w-6 text-primary" />
-                    <CardTitle>Đồng hồ</CardTitle>
-                    </div>
-                    <CardDescription>
-                    Xem thời gian hiện tại với độ chính xác đến từng giây.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="flex justify-center">
-                    <ClockWidget />
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <div className="flex items-center gap-2">
-                    <Timer className="h-6 w-6 text-primary" />
-                    <CardTitle>Đếm ngược</CardTitle>
-                    </div>
-                    <CardDescription>
-                    Đếm ngược đến một sự kiện quan trọng trong tương lai.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="flex justify-center">
-                    <CountdownWidget />
-                </CardContent>
-            </Card>
         </div>
        
         <Card className="lg:col-span-3">
-           <CardHeader>
-            <div className="flex items-center gap-2">
-              <CloudSun className="h-6 w-6 text-primary" />
-              <CardTitle>Thời tiết</CardTitle>
-            </div>
-            <CardDescription>
-              Xem thông tin thời tiết hiện tại của các tỉnh thành Việt Nam.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <WeatherWidget />
-          </CardContent>
-        </Card>
-
-        <Card className="md:col-span-1 lg:col-span-3">
           <CardHeader>
             <div className="flex items-center gap-2">
               <BrainCircuit className="h-6 w-6 text-primary" />
