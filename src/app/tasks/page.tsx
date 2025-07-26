@@ -28,16 +28,21 @@ export default function TasksPage() {
 
   useEffect(() => {
     // Tải công việc từ localStorage khi component được mount
-    const savedTasks = localStorage.getItem("tasks");
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    } else {
-      // Dữ liệu mẫu nếu không có gì trong localStorage
-      setTasks([
-        { id: 1, text: "Thiết kế giao diện cho dashboard", completed: true, dueDate: "2024-08-15" },
-        { id: 2, text: "Phát triển API cho tính năng ghi chú", completed: false, dueDate: "2024-08-20" },
-        { id: 3, text: "Tích hợp cổng thanh toán", completed: false, dueDate: null },
-      ]);
+    try {
+        const savedTasks = localStorage.getItem("tasks");
+        if (savedTasks) {
+          setTasks(JSON.parse(savedTasks));
+        } else {
+          // Dữ liệu mẫu nếu không có gì trong localStorage
+          setTasks([
+            { id: 1, text: "Thiết kế giao diện cho dashboard", completed: true, dueDate: "2024-08-15" },
+            { id: 2, text: "Phát triển API cho tính năng ghi chú", completed: false, dueDate: "2024-08-20" },
+            { id: 3, text: "Tích hợp cổng thanh toán", completed: false, dueDate: null },
+          ]);
+        }
+    } catch (error) {
+        console.error("Failed to parse tasks from localStorage", error);
+        setTasks([]);
     }
   }, []);
 
