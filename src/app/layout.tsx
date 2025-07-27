@@ -12,9 +12,49 @@ import AuthDependentUI from "./auth-dependent-ui";
 
 
 export const metadata: Metadata = {
-  title: "All-in-One Personal Hub",
-  description:
-    "Một trung tâm cá nhân với portfolio, blog, và nhiều công cụ khác.",
+  title: {
+    default: "All-in-One Personal Hub | Trang chủ",
+    template: "%s | All-in-One Personal Hub",
+  },
+  description: "Một trung tâm cá nhân để giới thiệu dự án, viết blog, và sử dụng các công cụ AI mạnh mẽ. Khám phá các công cụ quản lý công việc, ghi chú, và sáng tạo nội dung độc đáo.",
+  keywords: ["Next.js", "React", "Tailwind CSS", "Firebase", "Genkit", "AI", "Portfolio", "Blog"],
+  authors: [{ name: "Your Name", url: "https://your-website.com" }],
+  creator: "Your Name",
+  openGraph: {
+    title: "All-in-One Personal Hub | Trang chủ",
+    description: "Khám phá một không gian cá nhân đa năng được xây dựng với các công nghệ web mới nhất và AI.",
+    url: "https://your-website.com",
+    siteName: "All-in-One Personal Hub",
+    images: [
+      {
+        url: "https://placehold.co/1200x630.png", // Replace with your actual OG image URL
+        width: 1200,
+        height: 630,
+        alt: "All-in-One Personal Hub",
+      },
+    ],
+    locale: "vi_VN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "All-in-One Personal Hub | Trang chủ",
+    description: "Khám phá một không gian cá nhân đa năng được xây dựng với các công nghệ web mới nhất và AI.",
+    // site: "@yourtwitterhandle", // Replace with your Twitter handle
+    // creator: "@yourtwitterhandle", // Replace with your Twitter handle
+    images: ["https://placehold.co/1200x630.png"], // Replace with your actual OG image URL
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

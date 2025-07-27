@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Download, Palette, ImageIcon, Loader2 } from 'lucide-react';
+import { Download, Palette, ImageIcon, Loader2, Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import html2canvas from 'html2canvas';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateImage, GenerateImageOutput } from "@/ai/flows/generate-image";
+import { generateVideo, GenerateVideoOutput } from "@/ai/flows/generate-video";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -237,28 +238,127 @@ function AiImageCreator() {
   );
 }
 
+function AiVideoCreator() {
+  const [loading, setLoading] = useState(false);
+  const [prompt, setPrompt] = useState("Một con rồng uy nghi bay lượn trên một khu rừng huyền bí lúc bình minh.");
+  const [result, setResult] = useState<GenerateVideoOutput | null>(null);
+  const { toast } = useToast();
+
+  const handleGenerateVideo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!prompt) return;
+
+    setLoading(true);
+    setResult(null);
+    try {
+      const res = await generateVideo({ prompt });
+      setResult(res);
+    } catch (error) {
+      console.error("Failed to generate video:", error);
+      toast({
+        title: "Lỗi tạo video",
+        description: "Không thể tạo video. Vui lòng thử lại sau.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <Card>
+        <CardHeader>
+            <CardTitle>Trình tạo video bằng AI</CardTitle>
+            <CardDescription>Biến ý tưởng của bạn thành video. Nhập mô tả và để AI tạo ra một video ngắn độc đáo.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+             <form onSubmit={handleGenerateVideo} className="flex items-center gap-2">
+                <Input
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    placeholder="Ví dụ: Một con rồng uy nghi bay lượn..."
+                    className="flex-grow"
+                    disabled={loading}
+                />
+                <Button type="submit" disabled={loading || !prompt}>
+                {loading ? (
+                    <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Đang tạo...
+                    </>
+                ) : (
+                    <>
+                    <Video className="mr-2 h-4 w-4" />
+                    Tạo video
+                    </>
+                )}
+                </Button>
+            </form>
+            <div className="mt-4">
+                {loading && (
+                <div className="flex aspect-video w-full items-center justify-center rounded-lg border border-dashed">
+                    <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                    <span>AI đang xử lý video... Quá trình này có thể mất vài phút.</span>
+                    </div>
+                </div>
+                )}
+                {result?.videoDataUri && (
+                <div className="relative aspect-video">
+                    <video
+                        src={result.videoDataUri}
+                        controls
+                        autoPlay
+                        loop
+                        muted
+                        className="w-full h-full rounded-md object-contain bg-muted"
+                    />
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        className="absolute bottom-4 right-4 bg-background/50"
+                        asChild
+                    >
+                        <a href={result.videoDataUri} download={`${prompt}.mp4`}>
+                        <Download />
+                        </a>
+                    </Button>
+                </div>
+                )}
+            </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 
 export default function MemePage() {
     return (
         <div className="container mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <div className="mb-8 text-center">
                 <h1 className="font-headline text-4xl font-bold tracking-tight">
-                    Tạo ảnh & Meme tiện ích
+                    Trung tâm sáng tạo Media
                 </h1>
                 <p className="mt-4 text-lg text-muted-foreground">
-                    Sử dụng các mẫu có sẵn hoặc để AI tạo ra những hình ảnh độc đáo.
+                    Sử dụng các mẫu có sẵn hoặc để AI tạo ra những hình ảnh và video độc đáo.
                 </p>
             </div>
-             <Tabs defaultValue="meme" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 max-w-sm mx-auto">
+             <Tabs defaultValue="image" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 max-w-lg mx-auto">
                     <TabsTrigger value="meme">Tạo Meme</TabsTrigger>
-                    <TabsTrigger value="ai">Tạo ảnh bằng AI</TabsTrigger>
+                    <TabsTrigger value="image">Tạo ảnh bằng AI</TabsTrigger>
+                    <TabsTrigger value="video">Tạo video bằng AI</TabsTrigger>
                 </TabsList>
                 <TabsContent value="meme" className="mt-6">
                     <MemeCreator />
                 </TabsContent>
-                <TabsContent value="ai" className="mt-6">
+                <TabsContent value="image" className="mt-6">
                     <AiImageCreator />
+                </TabsContent>
+                 <TabsContent value="video" className="mt-6">
+                    <AiVideoCreator />
                 </TabsContent>
             </Tabs>
         </div>
