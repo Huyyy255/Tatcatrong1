@@ -1,3 +1,4 @@
+
 "use client";
 import * as React from "react";
 import { motion } from "framer-motion";
@@ -12,11 +13,11 @@ const Card = React.forwardRef<
   <MotionDiv
     ref={ref}
     className={cn(
-      "rounded-[var(--radius)] border bg-card/80 text-card-foreground shadow-sm backdrop-blur-lg",
+      "rounded-2xl border bg-card/80 text-card-foreground shadow-sm backdrop-blur-lg",
       className
     )}
-    whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-    whileTap={{ scale: 0.98, transition: { duration: 0.2 } }}
+    whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }}
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
     {...props}
   />
 ));
@@ -36,7 +37,7 @@ CardHeader.displayName = "CardHeader";
 
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}

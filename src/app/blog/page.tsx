@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -76,7 +77,7 @@ export default function BlogPage() {
         {filteredPosts.map((post) => (
           <Card
             key={post.slug}
-            className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl"
+            className="flex flex-col overflow-hidden"
           >
             <Link href={`/blog/${post.slug}`} className="block">
               <CardHeader className="p-0">
@@ -85,7 +86,7 @@ export default function BlogPage() {
                   alt={post.title}
                   width={600}
                   height={400}
-                  className="aspect-video h-auto w-full object-cover"
+                  className="aspect-video h-auto w-full object-cover rounded-t-2xl"
                   data-ai-hint={post.aiHint}
                 />
               </CardHeader>

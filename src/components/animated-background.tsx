@@ -6,13 +6,13 @@ import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
 
 const colors = [
-  "bg-blue-500",
-  "bg-purple-500",
-  "bg-pink-500",
-  "bg-orange-500",
-  "bg-yellow-400",
-  "bg-green-400",
+  "bg-sky-500",
+  "bg-violet-500",
+  "bg-rose-500",
+  "bg-amber-500",
+  "bg-lime-400",
   "bg-teal-400",
+  "bg-indigo-500",
 ];
 
 const animationDurations = [

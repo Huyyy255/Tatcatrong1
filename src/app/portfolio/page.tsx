@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -70,7 +71,7 @@ export default function PortfolioPage() {
         {projects.map((project) => (
           <Card
             key={project.title}
-            className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl"
+            className="flex flex-col overflow-hidden"
           >
             <CardHeader className="p-0">
               <Image
@@ -78,7 +79,7 @@ export default function PortfolioPage() {
                 alt={project.title}
                 width={600}
                 height={400}
-                className="h-auto w-full object-cover"
+                className="h-auto w-full object-cover rounded-t-2xl"
                 data-ai-hint={project.aiHint}
               />
             </CardHeader>

@@ -1,4 +1,4 @@
-"use client";
+
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -7,9 +7,11 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { Confetti } from "@/components/confetti";
 import AuthDependentUI from "./auth-dependent-ui";
 import { AnimatePresence, motion } from "framer-motion";
+import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
-const metadata: Metadata = {
+
+export const metadata: Metadata = {
   title: {
     default: "All-in-One Personal Hub | Trang chủ",
     template: "%s | All-in-One Personal Hub",
@@ -25,7 +27,7 @@ const metadata: Metadata = {
     siteName: "All-in-One Personal Hub",
     images: [
       {
-        url: "https://placehold.co/1200x630.png", // Replace with your actual OG image URL
+        url: "https://placehold.co/1200x630.png",
         width: 1200,
         height: 630,
         alt: "All-in-One Personal Hub",
@@ -38,7 +40,7 @@ const metadata: Metadata = {
     card: "summary_large_image",
     title: "All-in-One Personal Hub | Trang chủ",
     description: "Khám phá một không gian cá nhân đa năng được xây dựng với các công nghệ web mới nhất và AI.",
-    images: ["https://placehold.co/1200x630.png"], // Replace with your actual OG image URL
+    images: ["https://placehold.co/1200x630.png"], 
   },
   robots: {
     index: true,
@@ -53,28 +55,11 @@ const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+function InnerLayout({ children }: { children: ReactNode }) {
+  "use client"
   const pathname = usePathname();
-
+  
   return (
-    <html lang="vi" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="font-body antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -98,6 +83,31 @@ export default function RootLayout({
           <Toaster />
           <Confetti />
         </ThemeProvider>
+  )
+}
+
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="vi" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-body antialiased">
+        <InnerLayout>{children}</InnerLayout>
       </body>
     </html>
   );
