@@ -6,13 +6,14 @@ import {
   CardTitle,
   CardDescription
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, Code, FileCode, Timer, GitCompare } from "lucide-react";
+import { BrainCircuit, Clock, Code, FileCode, Timer, GitCompare, RocketIcon } from "lucide-react";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";
 import CodeFixer from "./code-fixer";
 import LiveCodePreview from "./live-code-preview";
 import CodeComparator from "./code-comparator";
+import { AdvancedSearch } from "./advanced-search";
 
 
 export default function ToolsPage() {
@@ -28,6 +29,10 @@ export default function ToolsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="lg:col-span-3">
+            <AdvancedSearch />
+        </div>
+        
         <Card className="lg:col-span-3">
           <CardHeader>
             <div className="flex items-center gap-2">
