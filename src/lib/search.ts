@@ -2,7 +2,6 @@
 import { getJson } from 'serpapi';
 import { geminiPro } from '../ai/genkit';
 import { generate } from '@genkit-ai/ai';
-import { z } from 'zod';
 
 interface SearchResult {
   title: string;

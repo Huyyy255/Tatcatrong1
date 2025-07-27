@@ -9,27 +9,18 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
-import { Message, Part } from 'genkit/model';
+import { Part } from 'genkit/model';
 
-const ChatWithAiInputSchema = z.object({
-  history: z
-    .array(
-      z.object({
-        role: z.enum(['user', 'model']),
-        content: z.array(z.object({ text: z.string() })),
-      })
-    )
-    .describe('The history of the conversation.'),
-});
+export type ChatWithAiInput = {
+  history: {
+    role: 'user' | 'model';
+    content: { text: string }[];
+  }[];
+};
 
-export type ChatWithAiInput = z.infer<typeof ChatWithAiInputSchema>;
-
-const ChatWithAiOutputSchema = z.object({
-  response: z.string().describe("The AI model's response."),
-});
-
-export type ChatWithAiOutput = z.infer<typeof ChatWithAiOutputSchema>;
+export type ChatWithAiOutput = {
+  response: string;
+};
 
 export async function chatWithAi(
   input: ChatWithAiInput

@@ -6,7 +6,7 @@ import {
   CardTitle,
   CardDescription
 } from "@/components/ui/card";
-import { BrainCircuit, Clock, Code, FileCode, Timer, GitCompare, RocketIcon } from "lucide-react";
+import { BrainCircuit, Clock, Code, FileCode, Timer, GitCompare } from "lucide-react";
 import ClockWidget from "./clock-widget";
 import CountdownWidget from "./countdown-widget";
 import TrendingTopics from "./trending-topics";

@@ -39,7 +39,7 @@ export default function QuoteBlock() {
     <Card className="my-12 border-l-4 border-primary bg-primary/5">
       <CardContent className="p-6">
         <blockquote className="italic text-foreground">
-          "{quote.quote}"
+          &quot;{quote.quote}&quot;
           <footer className="mt-2 block text-right text-sm font-medium not-italic text-primary">
             — {quote.author}
           </footer>

@@ -2,7 +2,7 @@
 "use client"
 // @ts-expect-error - no types
 import { useMemo } from 'react'
-import autoAnimate, { type AutoAnimateOptions, type AutoAnimationPlugin } from '@formkit/auto-animate'
+import autoAnimate, { type AutoAnimateOptions } from '@formkit/auto-animate'
 
 /**
  * A hook that applies auto-animate to a parent element.

@@ -1,17 +1,15 @@
-
-
+"use client";
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
-import {
-  SidebarProvider
-} from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Confetti } from "@/components/confetti";
 import AuthDependentUI from "./auth-dependent-ui";
+import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
-
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: {
     default: "All-in-One Personal Hub | Trang chủ",
     template: "%s | All-in-One Personal Hub",
@@ -40,8 +38,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "All-in-One Personal Hub | Trang chủ",
     description: "Khám phá một không gian cá nhân đa năng được xây dựng với các công nghệ web mới nhất và AI.",
-    // site: "@yourtwitterhandle", // Replace with your Twitter handle
-    // creator: "@yourtwitterhandle", // Replace with your Twitter handle
     images: ["https://placehold.co/1200x630.png"], // Replace with your actual OG image URL
   },
   robots: {
@@ -62,6 +58,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
   return (
     <html lang="vi" suppressHydrationWarning>
       <head>
@@ -81,13 +79,22 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="dark"
           enableSystem
-          disableTransitionOnChange
         >
-            <SidebarProvider>
-              <AuthDependentUI>
-                 {children}
-              </AuthDependentUI>
-            </SidebarProvider>
+          <SidebarProvider>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={pathname}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <AuthDependentUI>
+                  {children}
+                </AuthDependentUI>
+              </motion.div>
+            </AnimatePresence>
+          </SidebarProvider>
           <Toaster />
           <Confetti />
         </ThemeProvider>

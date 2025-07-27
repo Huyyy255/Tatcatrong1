@@ -3,7 +3,6 @@
 
 import {
   Sidebar,
-  SidebarProvider,
   SidebarInset,
   SidebarTrigger,
   SidebarHeader,
@@ -26,7 +25,6 @@ import {
   ListTodo,
   Mail,
   Newspaper,
-  Rss,
   Palette,
   Star,
   User,
@@ -38,7 +36,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 
 const mainNav = [

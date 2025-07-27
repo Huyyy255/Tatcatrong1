@@ -1,14 +1,11 @@
 
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { cn } from '@/lib/utils';
-import { Play } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 function AnimatedToggle() {
     const [isOn, setIsOn] = useState(false);

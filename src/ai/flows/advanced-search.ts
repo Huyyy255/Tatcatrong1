@@ -1,15 +1,15 @@
-import { defineFlow, runFlow } from '@genkit-ai/flow';
-import { geminiPro } from '../genkit';
+import { defineFlow } from 'genkit';
+import { ai } from '../genkit';
 import { z } from 'zod';
 import {
   defineTool,
-  GenerationCommonOptions,
   generate,
-} from '@genkit-ai/ai';
+} from 'genkit/ai';
 import {
   searchGoogle,
   extractRelevantContent,
 } from '../../lib/search';
+import { string } from 'genkit/zod';
 
 const tavilySearchTool = defineTool(
   {
@@ -37,12 +37,12 @@ export const advancedSearchFlow = defineFlow(
   {
     name: 'advancedSearchFlow',
     inputSchema: z.object({ query: z.string() }),
-    outputSchema: z.string(),
+    outputSchema: string,
   },
   async (input) => {
     const llmResponse = await generate({
       prompt: `You are a world-class researcher. Your task is to provide a comprehensive and insightful summary of the given topic based on the provided context. The summary should be well-structured, easy to understand, and cover the most important aspects of the topic. The topic is: ${input.query}`,
-      model: geminiPro,
+      model: ai,
       tools: [tavilySearchTool],
       config: {
         maxOutputTokens: 2048,

@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { allPosts } from "@/lib/posts";
-import { ArrowRight, CodeXml, Newspaper, Cake, TerminalSquare } from "lucide-react";
+import { ArrowRight, CodeXml, Newspaper, Cake } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";

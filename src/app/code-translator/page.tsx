@@ -60,7 +60,7 @@ function UniversalDecoder() {
             return 'Định dạng không hợp lệ';
         }
       }
-    } catch (error) {
+    } catch {
       return 'Lỗi: Dữ liệu đầu vào không hợp lệ cho thao tác này.';
     }
   };
