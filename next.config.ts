@@ -21,10 +21,8 @@ const nextConfig: NextConfig = {
   },
    webpack: (config, { isServer }) => {
     if (!isServer) {
-        // Đây là cách đúng để xử lý các gói chỉ dành cho client
         config.resolve.fallback = {
             ...config.resolve.fallback,
-            'html2canvas': false,
             'async_hooks': false,
         };
     }
