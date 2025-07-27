@@ -2,14 +2,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme-provider";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { Confetti } from "@/components/confetti";
-import AuthDependentUI from "./auth-dependent-ui";
-import { AnimatePresence, motion } from "framer-motion";
+import ClientLayout from "./client-layout";
 import { ReactNode } from "react";
-import { usePathname } from "next/navigation";
-
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "All-in-One Personal Hub | Trang chủ",
     description: "Khám phá một không gian cá nhân đa năng được xây dựng với các công nghệ web mới nhất và AI.",
-    images: ["https://placehold.co/1200x630.png"], 
+    images: ["https://placehold.co/1200x630.png"],
   },
   robots: {
     index: true,
@@ -54,38 +49,6 @@ export const metadata: Metadata = {
     },
   },
 };
-
-function InnerLayout({ children }: { children: ReactNode }) {
-  "use client"
-  const pathname = usePathname();
-  
-  return (
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-        >
-          <SidebarProvider>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={pathname}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <AuthDependentUI>
-                  {children}
-                </AuthDependentUI>
-              </motion.div>
-            </AnimatePresence>
-          </SidebarProvider>
-          <Toaster />
-          <Confetti />
-        </ThemeProvider>
-  )
-}
-
 
 export default function RootLayout({
   children,
@@ -107,7 +70,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <InnerLayout>{children}</InnerLayout>
+        <ClientLayout>{children}</ClientLayout>
+        <Toaster />
+        <Confetti />
       </body>
     </html>
   );
