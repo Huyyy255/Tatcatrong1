@@ -92,7 +92,7 @@ export default function CodeFixer() {
     try {
         const res = await translateCode({ code, sourceLanguage: sourceLang, targetLanguage: targetLang });
         setResult(res);
-        setExplanation(\`Đoạn mã đã được dịch từ \${sourceLang} sang \${targetLang}.\`);
+        setExplanation(`Đoạn mã đã được dịch từ ${sourceLang} sang ${targetLang}.`);
     } catch (error) {
         console.error("Failed to translate code:", error);
         toast({
