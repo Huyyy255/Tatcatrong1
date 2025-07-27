@@ -65,17 +65,17 @@ export default function LiveCodePreview() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setSrcDoc(\`
+      setSrcDoc(`
         <html>
           <head>
-            <style>\${debouncedCss}</style>
+            <style>${debouncedCss}</style>
           </head>
           <body>
-            \${debouncedHtml}
-            <script>\${debouncedJs}<\/script>
+            ${debouncedHtml}
+            <script>${debouncedJs}</script>
           </body>
         </html>
-      \`);
+      `);
     }, 250);
 
     return () => clearTimeout(timeout);

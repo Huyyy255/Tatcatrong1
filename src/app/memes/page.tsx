@@ -257,7 +257,7 @@ function AiVideoCreator() {
       console.error("Failed to generate video:", error);
       toast({
         title: "Lỗi tạo video",
-        description: "Không thể tạo video. Vui lòng thử lại sau.",
+        description: "Không thể tạo video. Vui lòng thử lại sau hoặc kiểm tra quyền truy cập API của bạn.",
         variant: "destructive",
       });
     } finally {
